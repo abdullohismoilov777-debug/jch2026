@@ -404,7 +404,6 @@ function renderOverview(){
 }
 
 function renderThirdPlace(){
-  // Har guruhdan 3-o'rinchi topamiz
   const groups=['A','B','C','D','E','F','G','H','I','J','K','L'];
   const thirds=[];
   groups.forEach(gk=>{
@@ -414,63 +413,62 @@ function renderThirdPlace(){
       thirds.push({...t,group:gk});
     }
   });
-  // Saralash: bal → gol farqi → urilgan gol
   thirds.sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
-
-  const isUzbIn=thirds.findIndex(t=>isUzb(t.name));
-
-  const pc=i=>{
-    if(i<8)return i<4?'p1 qualify':'p2 qualify';
-    return'';
-  };
 
   const rows=thirds.map((t,i)=>{
     const gd=t.gd;
     const qualify=i<8;
-    const rowBg=qualify?(i<4?'background:#0d1a0e':'background:#0d1220'):'';
-    return`<tr style="\${rowBg}">
-      <td><span class="pos \${i<8?(i===0?'p1':i<4?'p2':'p3'):''}">\${i+1}</span></td>
-      <td style="font-size:11px;color:var(--gold)">\${t.group}</td>
-      <td><div class="tc">\${fl(t.name)}<span\${isUzb(t.name)?' style="color:#23c96e"':''}>\${uz(t.name)}</span></div></td>
-      <td>\${t.mp}</td><td>\${t.w}</td><td>\${t.d}</td><td>\${t.l}</td>
-      <td>\${t.gf}</td><td>\${t.ga}</td>
-      <td class="gd\${gd>0?' pos':gd<0?' neg':''}">\${gd>0?'+':''}\${gd}</td>
-      <td class="pts">\${t.pts}</td>
-      <td>\${qualify?'<span style="color:#23c96e;font-size:11px">✅ PLAYOFF</span>':'<span style="color:#e05252;font-size:11px">❌</span>'}</td>
-    </tr>`;
+    const bg=qualify?(i<4?'background:#0d1a0e':'background:#0d1220'):'';
+    const posClass=i===0?'p1':i<4?'p2':i<8?'p3':'';
+    const holat=qualify
+      ? '<span style="color:#23c96e;font-size:11px">&#x2705; PLAYOFF</span>'
+      : '<span style="color:#e05252;font-size:11px">&#x274C;</span>';
+    return '<tr style="'+bg+'">'
+      +'<td><span class="pos '+posClass+'">'+(i+1)+'</span></td>'
+      +'<td style="font-size:11px;color:var(--gold)">'+t.group+'</td>'
+      +'<td><div class="tc">'+fl(t.name)+'<span'+(isUzb(t.name)?' style="color:#23c96e"':'')+'>'+uz(t.name)+'</span></div></td>'
+      +'<td>'+t.mp+'</td><td>'+t.w+'</td><td>'+t.d+'</td><td>'+t.l+'</td>'
+      +'<td>'+t.gf+'</td><td>'+t.ga+'</td>'
+      +'<td class="gd'+(gd>0?' pos':gd<0?' neg':'')+'">'+( gd>0?'+':'')+gd+'</td>'
+      +'<td class="pts">'+t.pts+'</td>'
+      +'<td>'+holat+'</td>'
+      +'</tr>';
   }).join('');
 
   const uzbThird=thirds.find(t=>isUzb(t.name));
   const uzbPos=thirds.findIndex(t=>isUzb(t.name))+1;
 
-  document.getElementById('page-third').innerHTML=`
-    <div class="sec">🥉 ENG YAXSHI 3-O'RINCHILAR</div>
-    <div style="background:#111827;border:1px solid #1e2a42;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#5a6880;line-height:1.8">
-      12 guruhdan faqat <span style="color:var(--gold);font-weight:700">8 ta eng yaxshi 3-o'rinchi</span> playoff ga chiqadi.<br>
-      Saralash tartibi: 1️⃣ Ball → 2️⃣ Gol farqi → 3️⃣ Urilgan gol → 4️⃣ Fair play
-    </div>
-    \${uzbThird?(`<div class="uzb-ban" style="margin-bottom:14px">
-      <h3>🇺🇿 O'ZBEKISTON 3-O'RIN SSENARIYSI</h3>
-      <div class="uzbs">
-        <span style="font-family:'Bebas Neue',cursive;font-size:20px;color:#23c96e">
-          Agar 3-o'rin bo'lsa: \${uzbPos<=8?"✅ PLAYOFF":"❌ TASHQARIDA"}
-        </span>
-        <span style="color:var(--muted);font-size:12px">Hozirgi holat: 3-o'rinchilar orasida \${uzbPos}-o'rin</span>
-      </div>
-    </div>`):''}
-    <div class="sw"><table>
-      <thead><tr>
-        <th>#</th><th>G</th><th>JAMOA</th>
-        <th>O</th><th>G</th><th>D</th><th>M</th>
-        <th>UG</th><th>KG</th><th>FF</th><th>BAL</th><th>HOLAT</th>
-      </tr></thead>
-      <tbody>\${rows}</tbody>
-    </table></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:8px">
-      <span style="color:#23c96e">🟢 1-8 o'rin → Playoff</span>
-      <span style="color:#e05252">🔴 9-12 o'rin → Uyga</span>
-      <span style="color:#5a6880">* Guruhlar to'liq tugagach aniq bo'ladi</span>
-    </div>`;
+  let uzbBanner='';
+  if(uzbThird){
+    const uzbQ=uzbPos<=8;
+    uzbBanner='<div class="uzb-ban" style="margin-bottom:14px">'
+      +'<h3>&#127482;&#127487; O'ZBEKISTON 3-O'RIN SSENARIYSI</h3>'
+      +'<div class="uzbs">'
+      +'<span style="font-family:'Bebas Neue',cursive;font-size:20px;color:#23c96e">'
+      +(uzbQ?'&#x2705; PLAYOFF GA CHIQADI':'&#x274C; TASHQARIDA')+'</span>'
+      +'<span style="color:var(--muted);font-size:12px">3-o'rinchilar ichida '+uzbPos+'-o'rin</span>'
+      +'</div></div>';
+  }
+
+  document.getElementById('page-third').innerHTML=
+    '<div class="sec">&#x1F949; ENG YAXSHI 3-O'RINCHILAR</div>'
+    +'<div style="background:#111827;border:1px solid #1e2a42;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#5a6880;line-height:1.8">'
+    +'12 guruhdan faqat <span style="color:var(--gold);font-weight:700">8 ta eng yaxshi 3-o'rinchi</span> playoff ga chiqadi.<br>'
+    +'Saralash: 1&#xFE0F;&#x20E3; Ball &#x2192; 2&#xFE0F;&#x20E3; Gol farqi &#x2192; 3&#xFE0F;&#x20E3; Urilgan gol &#x2192; 4&#xFE0F;&#x20E3; Fair play'
+    +'</div>'
+    +uzbBanner
+    +'<div class="sw"><table>'
+    +'<thead><tr><th>#</th><th>G</th><th>JAMOA</th>'
+    +'<th>O</th><th>G</th><th>D</th><th>M</th>'
+    +'<th>UG</th><th>KG</th><th>FF</th><th>BAL</th><th>HOLAT</th>'
+    +'</tr></thead>'
+    +'<tbody>'+rows+'</tbody>'
+    +'</table></div>'
+    +'<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:8px">'
+    +'<span style="color:#23c96e">&#x1F7E2; 1-8 o'rin &#x2192; Playoff</span>'
+    +'<span style="color:#e05252">&#x1F534; 9-12 o'rin &#x2192; Uyga</span>'
+    +'<span>* Guruhlar tugagach aniq bo'ladi</span>'
+    +'</div>';
 }
 
 function switchTo(key){
