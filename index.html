@@ -11,7 +11,7 @@
 body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh}
 header{background:linear-gradient(135deg,#0c1525,#0f1e3a);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .logo{display:flex;align-items:center;gap:12px}
-.logo-icon{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 20px #d4a83230}
+.logo-icon{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:20px}
 h1{font-family:'Bebas Neue',cursive;font-size:24px;letter-spacing:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
 .sub{font-size:11px;color:var(--muted);letter-spacing:1.5px;margin-top:2px}
 .upill{font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 12px;display:flex;align-items:center;gap:5px}
@@ -135,11 +135,11 @@ const UZ={
   "Bosnia and Herzegovina":"Bosniya","Qatar":"Qatar","Switzerland":"Shveytsariya",
   "Brazil":"Braziliya","Morocco":"Marokash","Scotland":"Shotlandiya","Haiti":"Gaiti",
   "USA":"AQSh","United States":"AQSh","Paraguay":"Paragvay","Australia":"Avstraliya",
-  "Turkiye":"Turkiya","Turkey":"Turkiya","Germany":"Germaniya","Curacao":"Kyurasao",
-  "Cote d'Ivoire":"Kot-d'Ivuar","Ivory Coast":"Kot-d'Ivuar","Ecuador":"Ekvador",
+  "Türkiye":"Turkiya","Turkey":"Turkiya","Germany":"Germaniya","Curaçao":"Kyurasao",
+  "Côte d'Ivoire":"Kot-d'Ivuar","Ivory Coast":"Kot-d'Ivuar","Ecuador":"Ekvador",
   "Netherlands":"Niderlandiya","Japan":"Yaponiya","Sweden":"Shvetsiya","Tunisia":"Tunis",
   "Belgium":"Belgiya","Iran":"Eron","Egypt":"Misr","New Zealand":"Yangi Zelandiya",
-  "Spain":"Ispaniya","Cape Verde":"Kabo-Verde","Cabo Verde":"Kabo-Verde",
+  "Spain":"Ispaniya","Cabo Verde":"Kabo-Verde","Cape Verde":"Kabo-Verde",
   "Saudi Arabia":"Saudiya Arabistoni","Uruguay":"Urugvay","France":"Fransiya",
   "Senegal":"Senegal","Iraq":"Iroq","Norway":"Norvegiya","Argentina":"Argentina",
   "Algeria":"Jazoir","Austria":"Avstriya","Jordan":"Iordaniya","Portugal":"Portugaliya",
@@ -152,10 +152,10 @@ const FL={
   "Canada":"🇨🇦","Bosnia and Herzegovina":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
   "Brazil":"🇧🇷","Morocco":"🇲🇦","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Haiti":"🇭🇹",
   "USA":"🇺🇸","United States":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺",
-  "Turkiye":"🇹🇷","Turkey":"🇹🇷","Germany":"🇩🇪","Curacao":"🇨🇼",
-  "Cote d'Ivoire":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵",
+  "Türkiye":"🇹🇷","Turkey":"🇹🇷","Germany":"🇩🇪","Curaçao":"🇨🇼",
+  "Côte d'Ivoire":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵",
   "Sweden":"🇸🇪","Tunisia":"🇹🇳","Belgium":"🇧🇪","Iran":"🇮🇷","Egypt":"🇪🇬",
-  "New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Cabo Verde":"🇨🇻",
+  "New Zealand":"🇳🇿","Spain":"🇪🇸","Cabo Verde":"🇨🇻","Cape Verde":"🇨🇻",
   "Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳",
   "Iraq":"🇮🇶","Norway":"🇳🇴","Argentina":"🇦🇷","Algeria":"🇩🇿",
   "Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","DR Congo":"🇨🇩",
@@ -163,136 +163,122 @@ const FL={
   "Ghana":"🇬🇭","Panama":"🇵🇦"
 };
 
+// Guruhga tegishli jamoalar (football-data.org GROUP_STAGE dan aniqlanadi)
+const TEAM_GROUP={
+  "Mexico":"A","South Africa":"A","South Korea":"A","Czechia":"A",
+  "Canada":"B","Bosnia and Herzegovina":"B","Qatar":"B","Switzerland":"B",
+  "Brazil":"C","Morocco":"C","Scotland":"C","Haiti":"C",
+  "USA":"D","United States":"D","Paraguay":"D","Australia":"D","Türkiye":"D",
+  "Germany":"E","Curaçao":"E","Côte d'Ivoire":"E","Ecuador":"E",
+  "Netherlands":"F","Japan":"F","Sweden":"F","Tunisia":"F",
+  "Belgium":"G","Iran":"G","Egypt":"G","New Zealand":"G",
+  "Spain":"H","Cabo Verde":"H","Cape Verde":"H","Saudi Arabia":"H","Uruguay":"H",
+  "France":"I","Senegal":"I","Iraq":"I","Norway":"I",
+  "Argentina":"J","Algeria":"J","Austria":"J","Jordan":"J",
+  "Portugal":"K","DR Congo":"K","Uzbekistan":"K","Colombia":"K",
+  "England":"L","Croatia":"L","Ghana":"L","Panama":"L"
+};
+
 function uz(n){return UZ[n]||n}
 function fl(n){return FL[n]||"🏳️"}
 function isUzb(n){return n==="Uzbekistan"}
+function getGroup(teamName){return TEAM_GROUP[teamName]||"?"}
 
-// Toshkent vaqti (UTC+5)
 function tshTime(utcStr){
   if(!utcStr)return"—";
-  const d=new Date(utcStr);
-  return d.toLocaleTimeString('uz',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Tashkent'});
+  try{
+    const d=new Date(utcStr);
+    return d.toLocaleTimeString('uz',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Tashkent'});
+  }catch{return"—"}
 }
 function tshDate(utcStr){
   if(!utcStr)return"";
-  const d=new Date(utcStr);
-  return d.toLocaleDateString('uz',{day:'2-digit',month:'2-digit',timeZone:'Asia/Tashkent'});
+  try{
+    const d=new Date(utcStr);
+    return d.toLocaleDateString('uz',{day:'2-digit',month:'2-digit',timeZone:'Asia/Tashkent'});
+  }catch{return""}
 }
 function isToday(utcStr){
   if(!utcStr)return false;
-  const d=new Date(utcStr);
-  const now=new Date();
-  const tsh=new Date(d.getTime());
-  const nowTsh=new Date(now.getTime());
-  // UTC+5
-  const dDay=new Date(tsh.getTime()+5*3600000);
-  const nDay=new Date(nowTsh.getTime()+5*3600000);
-  return dDay.toDateString()===nDay.toDateString();
-}
-
-// ============================================================
-// GURUH → O'YIN MA'LUMOTLARI (worldcup26.ir API dan keladi)
-// Bu yerda faqat UZB o'yinlari belgisi saqlanadi
-// ============================================================
-const UZB_MATCHES=[
-  "Uzbekistan|Colombia","Colombia|Uzbekistan",
-  "Portugal|Uzbekistan","Uzbekistan|Portugal",
-  "DR Congo|Uzbekistan","Uzbekistan|DR Congo"
-];
-function isUzbMatch(h,a){
-  return UZB_MATCHES.includes(`${h}|${a}`)||isUzb(h)||isUzb(a);
-}
-
-// Guruh nomlarini API formatidan o'zgartirish
-function groupLetter(g){
-  if(!g)return"?";
-  // "Group A" yoki "A" formatlar
-  const m=g.match(/([A-L])/);
-  return m?m[1]:"?";
-}
-
-// API ma'lumotlari
-let ALL_GAMES=[];
-let GROUPS_DATA={};
-
-// ============================================================
-// worldcup26.ir API
-// ============================================================
-async function fetchAPI(){
   try{
-    const [gamesRes, groupsRes]=await Promise.all([
-      fetch('https://worldcup26.ir/get/games'),
-      fetch('https://worldcup26.ir/get/groups')
-    ]);
-    const games=await gamesRes.json();
-    const groups=await groupsRes.json();
-    ALL_GAMES=Array.isArray(games)?games:(games.games||games.data||[]);
-    GROUPS_DATA=groups;
-    return true;
-  }catch(e){
-    console.error('API xatosi:',e);
-    return false;
-  }
+    const d=new Date(utcStr);
+    const now=new Date();
+    const dTsh=new Date(d.getTime()+5*3600000);
+    const nTsh=new Date(now.getTime()+5*3600000);
+    return dTsh.toDateString()===nTsh.toDateString();
+  }catch{return false}
+}
+
+// football-data.org status
+function isDone(m){return["FINISHED"].includes(m.status||"")}
+function isLive(m){return["IN_PLAY","PAUSED"].includes(m.status||"")}
+
+let ALL_MATCHES=[];
+
+// ============================================================
+// API — Vercel Proxy → football-data.org
+// ============================================================
+async function fetchMatches(){
+  const res=await fetch('/api/matches?type=matches');
+  if(!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+  const data=await res.json();
+  if(data.error) throw new Error(data.error);
+  return data.matches||[];
 }
 
 // ============================================================
-// RENDER FUNKSIYALARI
+// RENDER
 // ============================================================
-function renderMC(game,showG=false){
-  const h=game.home_team?.name||game.homeTeam||"";
-  const a=game.away_team?.name||game.awayTeam||"";
-  const hg=game.home_score??game.homeScore??null;
-  const ag=game.away_score??game.awayScore??null;
-  const status=game.status||"";
-  const date=game.date||game.match_date||"";
-  const venue=game.venue||game.stadium||"";
-  const gKey=groupLetter(game.group||game.stage||"");
+function getScore(m){
+  const s=m.score||{};
+  const ft=s.fullTime||{};
+  return{h:ft.home,a:ft.away};
+}
 
-  const done=status==="FINISHED"||status==="FT"||status==="finished";
-  const live=status==="LIVE"||status==="IN_PLAY"||status==="1H"||status==="2H"||status==="HT";
-  const uzb=isUzbMatch(h,a);
-
-  const scoreStr=done&&hg!==null?`${hg} : ${ag}`:live&&hg!==null?`${hg} : ${ag}`:`— : —`;
+function renderMC(m,showG=false){
+  const hn=m.homeTeam?.name||"";
+  const an=m.awayTeam?.name||"";
+  const sc=getScore(m);
+  const done=isDone(m), live=isLive(m);
+  const uzb=isUzb(hn)||isUzb(an);
+  const gKey=getGroup(hn);
+  const scoreStr=done&&sc.h!==null?`${sc.h} : ${sc.a}`:live&&sc.h!==null?`${sc.h} : ${sc.a}`:`— : —`;
   const scCls=done||live?'sc':'sc up';
   const badge=live?`<span class="bdg b-live">🔴 JONLI</span>`:
     done?`<span class="bdg b-done">✓ TUGADI</span>`:
-    `<span class="bdg b-soon">📅 ${tshDate(date)}</span>`;
-
+    `<span class="bdg b-soon">📅 ${tshDate(m.utcDate)}</span>`;
+  const venue=m.venue||"";
   return`<div class="mc-w">
     <div class="mc${uzb?' uzb':''}${live?' live':''}">
-      <div class="team"><span class="flag">${fl(h)}</span><span${isUzb(h)?' class="uzbt"':''}>${uz(h)}</span></div>
+      <div class="team"><span class="flag">${fl(hn)}</span><span${isUzb(hn)?' class="uzbt"':''}>${uz(hn)}</span></div>
       <div class="ctr">
         <div class="sbox"><div class="${scCls}">${scoreStr}</div></div>
-        <div class="mt">${tshDate(date)} · ${tshTime(date)} TSH</div>
+        <div class="mt">${tshDate(m.utcDate)} · ${tshTime(m.utcDate)} TSH</div>
         <div class="vn">${venue}</div>
         ${badge}
       </div>
-      <div class="team r"><span class="flag">${fl(a)}</span><span${isUzb(a)?' class="uzbt"':''}>${uz(a)}</span></div>
+      <div class="team r"><span class="flag">${fl(an)}</span><span${isUzb(an)?' class="uzbt"':''}>${uz(an)}</span></div>
     </div>
-    ${showG&&gKey?`<span class="gbdg">${gKey} GURUH</span>`:''}
+    ${showG&&gKey!=="?"?`<span class="gbdg">${gKey} GURUH</span>`:''}
   </div>`;
 }
 
-function calcStandingsFromAPI(gKey){
-  const gGames=ALL_GAMES.filter(g=>groupLetter(g.group||g.stage||"")=== gKey);
+function calcStandings(gKey){
+  const ms=ALL_MATCHES.filter(m=>getGroup(m.homeTeam?.name||"")=== gKey);
   const stats={};
-  gGames.forEach(game=>{
-    const h=game.home_team?.name||game.homeTeam||"";
-    const a=game.away_team?.name||game.awayTeam||"";
+  ms.forEach(m=>{
+    const h=m.homeTeam?.name||"", a=m.awayTeam?.name||"";
     if(!h||!a)return;
     if(!stats[h])stats[h]={mp:0,w:0,d:0,l:0,gf:0,ga:0,pts:0};
     if(!stats[a])stats[a]={mp:0,w:0,d:0,l:0,gf:0,ga:0,pts:0};
-    const status=game.status||"";
-    const done=status==="FINISHED"||status==="FT"||status==="finished";
-    if(!done)return;
-    const hg=parseInt(game.home_score??game.homeScore??-1);
-    const ag=parseInt(game.away_score??game.awayScore??-1);
-    if(isNaN(hg)||isNaN(ag)||hg<0||ag<0)return;
+    if(!isDone(m))return;
+    const sc=getScore(m);
+    if(sc.h===null||sc.a===null)return;
     stats[h].mp++;stats[a].mp++;
-    stats[h].gf+=hg;stats[h].ga+=ag;
-    stats[a].gf+=ag;stats[a].ga+=hg;
-    if(hg>ag){stats[h].w++;stats[a].l++;stats[h].pts+=3;}
-    else if(hg<ag){stats[a].w++;stats[h].l++;stats[a].pts+=3;}
+    stats[h].gf+=sc.h;stats[h].ga+=sc.a;
+    stats[a].gf+=sc.a;stats[a].ga+=sc.h;
+    if(sc.h>sc.a){stats[h].w++;stats[a].l++;stats[h].pts+=3;}
+    else if(sc.h<sc.a){stats[a].w++;stats[h].l++;stats[a].pts+=3;}
     else{stats[h].d++;stats[a].d++;stats[h].pts++;stats[a].pts++;}
   });
   return Object.entries(stats).map(([n,s])=>({name:n,...s,gd:s.gf-s.ga}))
@@ -300,35 +286,32 @@ function calcStandingsFromAPI(gKey){
 }
 
 function renderStandings(gKey){
-  const rows=calcStandingsFromAPI(gKey);
-  if(!rows.length)return`<div style="color:var(--muted);font-size:13px;padding:10px">Ma'lumot yuklanmoqda...</div>`;
+  const rows=calcStandings(gKey);
+  if(!rows.length)return`<div style="color:var(--muted);font-size:13px;padding:10px">O'yinlar boshlanmagan</div>`;
   const pc=i=>i===0?'p1':i===1?'p2':i===2?'p3':'';
   const rc=i=>i===0?'rq1':i===1?'rq2':i===2?'rq3':'';
   return`<div class="sw"><table>
     <thead><tr><th>#</th><th>JAMOA</th><th>O</th><th>G</th><th>D</th><th>M</th><th>UG</th><th>KG</th><th>FF</th><th>BAL</th></tr></thead>
-    <tbody>
-    ${rows.map((r,i)=>{const gd=r.gd;return`<tr class="${rc(i)}${isUzb(r.name)?' uzr':''}">
+    <tbody>${rows.map((r,i)=>{const gd=r.gd;return`<tr class="${rc(i)}${isUzb(r.name)?' uzr':''}">
       <td><span class="pos ${pc(i)}">${i+1}</span></td>
       <td><div class="tc"><span>${fl(r.name)}</span><span${isUzb(r.name)?' style="color:#23c96e"':''}>${uz(r.name)}</span></div></td>
       <td>${r.mp}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
       <td>${r.gf}</td><td>${r.ga}</td>
       <td class="gd${gd>0?' pos':gd<0?' neg':''}">${gd>0?'+':''}${gd}</td>
       <td class="pts">${r.pts}</td>
-    </tr>`;}).join('')}
-    </tbody>
+    </tr>`;}).join('')}</tbody>
   </table></div>`;
 }
 
 function renderGroupPage(gKey){
-  const gGames=ALL_GAMES.filter(g=>groupLetter(g.group||g.stage||"")===gKey);
-  const done=gGames.filter(g=>{const s=g.status||"";return s==="FINISHED"||s==="FT"||s==="finished";});
-  const live=gGames.filter(g=>{const s=g.status||"";return s==="LIVE"||s==="IN_PLAY"||s==="1H"||s==="2H"||s==="HT";});
-  const upcoming=gGames.filter(g=>{const s=g.status||"";return !["FINISHED","FT","finished","LIVE","IN_PLAY","1H","2H","HT"].includes(s);});
+  const ms=ALL_MATCHES.filter(m=>getGroup(m.homeTeam?.name||"")=== gKey);
+  const done=ms.filter(m=>isDone(m));
+  const live=ms.filter(m=>isLive(m));
+  const upcoming=ms.filter(m=>!isDone(m)&&!isLive(m));
   const isK=gKey==='K';
-  const st=calcStandingsFromAPI(gKey);
+  const st=calcStandings(gKey);
   const uzbR=st.find(r=>isUzb(r.name));
   const uzbP=st.findIndex(r=>isUzb(r.name))+1;
-
   document.getElementById(`page-${gKey}`).innerHTML=`
     <div class="sec">🏅 ${gKey} GURUH${isK?' — <span style="color:#23c96e">O\'ZBEKISTON ⭐</span>':''}</div>
     ${isK&&uzbR?`<div class="uzb-ban">
@@ -350,25 +333,20 @@ function renderGroupPage(gKey){
         </div>
       </div>
       <div>
-        ${live.length?`<div class="sec" style="font-size:15px;color:#ff4444">🔴 JONLI</div><div class="mlist">${live.map(g=>renderMC(g)).join('')}</div>`:''}
-        ${done.length?`<div class="sec" style="font-size:15px">✅ TUGAGAN</div><div class="mlist">${done.map(g=>renderMC(g)).join('')}</div>`:''}
-        ${upcoming.length?`<div class="sec" style="font-size:15px">📅 KELGUSI</div><div class="mlist">${upcoming.map(g=>renderMC(g)).join('')}</div>`:''}
+        ${live.length?`<div class="sec" style="font-size:15px;color:#ff4444">🔴 JONLI</div><div class="mlist">${live.map(m=>renderMC(m)).join('')}</div>`:''}
+        ${done.length?`<div class="sec" style="font-size:15px">✅ TUGAGAN</div><div class="mlist">${done.map(m=>renderMC(m)).join('')}</div>`:''}
+        ${upcoming.length?`<div class="sec" style="font-size:15px">📅 KELGUSI</div><div class="mlist">${upcoming.map(m=>renderMC(m)).join('')}</div>`:''}
       </div>
     </div>`;
 }
 
 function renderOverview(){
-  const live=ALL_GAMES.filter(g=>{const s=g.status||"";return s==="LIVE"||s==="IN_PLAY"||s==="1H"||s==="2H"||s==="HT";});
-  const done=ALL_GAMES.filter(g=>{const s=g.status||"";return s==="FINISHED"||s==="FT"||s==="finished";});
-  const todayGames=ALL_GAMES.filter(g=>isToday(g.date||g.match_date||"")&&!["FINISHED","FT","finished"].includes(g.status||""));
+  const live=ALL_MATCHES.filter(m=>isLive(m));
+  const done=ALL_MATCHES.filter(m=>isDone(m));
+  const today=ALL_MATCHES.filter(m=>isToday(m.utcDate)&&!isDone(m)&&!isLive(m));
   const recent=[...done].reverse().slice(0,8);
   let totalG=0;
-  done.forEach(g=>{
-    const hg=parseInt(g.home_score??g.homeScore??0);
-    const ag=parseInt(g.away_score??g.awayScore??0);
-    if(!isNaN(hg)&&!isNaN(ag))totalG+=hg+ag;
-  });
-
+  done.forEach(m=>{const s=getScore(m);if(s.h!==null&&s.a!==null)totalG+=s.h+s.a;});
   const groups=['A','B','C','D','E','F','G','H','I','J','K','L'];
   document.getElementById('page-all').innerHTML=`
     <div class="srow">
@@ -377,23 +355,23 @@ function renderOverview(){
       <div class="sc2"><div class="sn">${done.length?(totalG/done.length).toFixed(1):'—'}</div><div class="sl">O'RTACHA GOL</div></div>
       <div class="sc2"><div class="sn">48</div><div class="sl">JAMOALAR</div></div>
     </div>
-    ${live.length?`<div class="sec">🔴 HOZIR JONLI</div><div class="mlist">${live.map(g=>renderMC(g,true)).join('')}</div>`:''}
-    ${todayGames.length?`<div class="sec">⚡ BUGUNGI O'YINLAR</div><div class="mlist">${todayGames.map(g=>renderMC(g,true)).join('')}</div>`:''}
+    ${live.length?`<div class="sec">🔴 HOZIR JONLI</div><div class="mlist">${live.map(m=>renderMC(m,true)).join('')}</div>`:''}
+    ${today.length?`<div class="sec">⚡ BUGUNGI O'YINLAR</div><div class="mlist">${today.map(m=>renderMC(m,true)).join('')}</div>`:''}
     <div class="sec">✅ SO'NGGI NATIJALAR</div>
-    <div class="mlist">${recent.map(g=>renderMC(g,true)).join('')}</div>
+    <div class="mlist">${recent.length?recent.map(m=>renderMC(m,true)).join(''):'<div style="color:var(--muted);padding:10px">Hali o\'yin bo\'lmagan</div>'}</div>
     <div class="sec">📊 BARCHA GURUHLAR</div>
     <div class="ogrid">
     ${groups.map(gk=>{
-      const st=calcStandingsFromAPI(gk);
+      const st=calcStandings(gk);
       const isK=gk==='K';
       return`<div class="gcard${isK?' uzb':''}" onclick="switchTo('${gk}')">
         <div class="gct">${gk} GURUH${isK?' ⭐':''}</div>
-        ${st.map((r,i)=>`<div class="mr">
+        ${st.length?st.map((r,i)=>`<div class="mr">
           <div class="mt2"><span>${fl(r.name)}</span>
           <span${isUzb(r.name)?' style="color:#23c96e"':''}${i<2?' style="font-weight:700"':''}>${uz(r.name)}</span>
           ${i<2?'<span style="font-size:9px;color:#2563eb;margin-left:2px">▲</span>':''}
           </div><span class="mp">${r.pts}</span>
-        </div>`).join('')}
+        </div>`).join(''):'<div style="color:var(--muted);font-size:11px">Yuklanmoqda...</div>'}
       </div>`;
     }).join('')}
     </div>`;
@@ -409,23 +387,25 @@ function switchTo(key){
 }
 
 async function init(){
-  const ok=await fetchAPI();
-  if(!ok){
+  try{
+    ALL_MATCHES=await fetchMatches();
+    renderOverview();
+    ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g=>renderGroupPage(g));
+    const t=new Date();
+    const h=String(Math.floor((t.getTime()/3600000+5)%24)).padStart(2,'0');
+    const min=String(t.getMinutes()).padStart(2,'0');
+    document.getElementById('upd').textContent=`Yangilandi: ${h}:${min} TSH`;
+    // Har 60 soniyada yangilanish
+    setTimeout(()=>location.reload(),60000);
+  }catch(err){
     document.getElementById('page-all').innerHTML=`
       <div class="err-box">
-        ⚠️ Internet ulanishini tekshiring yoki sahifani yangilang
-        <br><button class="retry-btn" onclick="init()">🔄 QAYTA URINISH</button>
+        ⚠️ Xatolik: ${err.message}
+        <br><br>
+        <button class="retry-btn" onclick="init()">🔄 QAYTA URINISH</button>
       </div>`;
-    return;
+    console.error(err);
   }
-  renderOverview();
-  ['A','B','C','D','E','F','G','H','I','J','K','L'].forEach(g=>renderGroupPage(g));
-  const t=new Date();
-  const tsh=new Date(t.getTime()+5*3600000);
-  document.getElementById('upd').textContent=
-    `Yangilandi: ${String(tsh.getUTCHours()).padStart(2,'0')}:${String(tsh.getUTCMinutes()).padStart(2,'0')} TSH`;
-  // Har 60 soniyada avtomatik yangilanish
-  setTimeout(()=>location.reload(),60000);
 }
 
 init();
