@@ -140,10 +140,12 @@ const UZ={
   "Netherlands":"Niderlandiya","Japan":"Yaponiya","Sweden":"Shvetsiya","Tunisia":"Tunis",
   "Belgium":"Belgiya","Iran":"Eron","Egypt":"Misr","New Zealand":"Yangi Zelandiya",
   "Spain":"Ispaniya","Cabo Verde":"Kabo-Verde","Cape Verde":"Kabo-Verde",
+  "Cape Verde Islands":"Kabo-Verde",
   "Saudi Arabia":"Saudiya Arabistoni","Uruguay":"Urugvay","France":"Fransiya",
   "Senegal":"Senegal","Iraq":"Iroq","Norway":"Norvegiya","Argentina":"Argentina",
   "Algeria":"Jazoir","Austria":"Avstriya","Jordan":"Iordaniya","Portugal":"Portugaliya",
-  "DR Congo":"Kongo DR","Congo DR":"Kongo DR","Uzbekistan":"O'zbekiston",
+  "DR Congo":"Kongo DR","Congo DR":"Kongo DR","Congo, DR":"Kongo DR",
+  "Democratic Republic of Congo":"Kongo DR","Uzbekistan":"O'zbekiston",
   "Colombia":"Kolumbiya","England":"Angliya","Croatia":"Xorvatiya",
   "Ghana":"Gana","Panama":"Panama"
 };
@@ -158,7 +160,9 @@ const FL={
   "New Zealand":"🇳🇿","Spain":"🇪🇸","Cabo Verde":"🇨🇻","Cape Verde":"🇨🇻",
   "Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳",
   "Iraq":"🇮🇶","Norway":"🇳🇴","Argentina":"🇦🇷","Algeria":"🇩🇿",
-  "Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","DR Congo":"🇨🇩",
+  "Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹",
+  "DR Congo":"🇨🇩","Congo DR":"🇨🇩","Congo, DR":"🇨🇩",
+  "Democratic Republic of Congo":"🇨🇩","Cape Verde Islands":"🇨🇻",
   "Uzbekistan":"🇺🇿","Colombia":"🇨🇴","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷",
   "Ghana":"🇬🇭","Panama":"🇵🇦"
 };
@@ -172,15 +176,35 @@ const TEAM_GROUP={
   "Germany":"E","Curaçao":"E","Côte d'Ivoire":"E","Ecuador":"E",
   "Netherlands":"F","Japan":"F","Sweden":"F","Tunisia":"F",
   "Belgium":"G","Iran":"G","Egypt":"G","New Zealand":"G",
-  "Spain":"H","Cabo Verde":"H","Cape Verde":"H","Saudi Arabia":"H","Uruguay":"H",
+  "Spain":"H","Cabo Verde":"H","Cape Verde":"H","Cape Verde Islands":"H","Saudi Arabia":"H","Uruguay":"H",
   "France":"I","Senegal":"I","Iraq":"I","Norway":"I",
   "Argentina":"J","Algeria":"J","Austria":"J","Jordan":"J",
-  "Portugal":"K","DR Congo":"K","Uzbekistan":"K","Colombia":"K",
+  "Portugal":"K","DR Congo":"K","Congo DR":"K","Congo, DR":"K","Democratic Republic of Congo":"K","Uzbekistan":"K","Colombia":"K",
   "England":"L","Croatia":"L","Ghana":"L","Panama":"L"
 };
 
 function uz(n){return UZ[n]||n}
-function fl(n){return FL[n]||"🏳️"}
+const FLAG_CODES={
+  "Mexico":"mx","South Africa":"za","South Korea":"kr","Czechia":"cz",
+  "Canada":"ca","Bosnia and Herzegovina":"ba","Qatar":"qa","Switzerland":"ch",
+  "Brazil":"br","Morocco":"ma","Scotland":"gb-sct","Haiti":"ht",
+  "USA":"us","United States":"us","Paraguay":"py","Australia":"au",
+  "Türkiye":"tr","Turkey":"tr","Germany":"de","Curaçao":"cw",
+  "Côte d'Ivoire":"ci","Ecuador":"ec","Netherlands":"nl","Japan":"jp",
+  "Sweden":"se","Tunisia":"tn","Belgium":"be","Iran":"ir","Egypt":"eg",
+  "New Zealand":"nz","Spain":"es","Cabo Verde":"cv","Cape Verde":"cv",
+  "Cape Verde Islands":"cv","Saudi Arabia":"sa","Uruguay":"uy",
+  "France":"fr","Senegal":"sn","Iraq":"iq","Norway":"no",
+  "Argentina":"ar","Algeria":"dz","Austria":"at","Jordan":"jo",
+  "Portugal":"pt","DR Congo":"cd","Congo DR":"cd","Congo, DR":"cd",
+  "Democratic Republic of Congo":"cd","Uzbekistan":"uz","Colombia":"co",
+  "England":"gb-eng","Croatia":"hr","Ghana":"gh","Panama":"pa"
+};
+function fl(n){
+  const code=FLAG_CODES[n]||FLAG_CODES[FL[n]];
+  if(!code)return'<span style="font-size:16px">🏳️</span>';
+  return'<img src="https://flagcdn.com/24x18/'+code+'.png" width="24" height="18" style="border-radius:2px;object-fit:cover;vertical-align:middle" alt="'+n+'">';
+}
 function isUzb(n){return n==="Uzbekistan"}
 function getGroup(teamName){return TEAM_GROUP[teamName]||"?"}
 
