@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JCH 2026 — Jonli Natijalar</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080f;--surface:#0d1120;--card:#111827;--border:#1e2a42;--gold:#d4a832;--gold2:#f5d06a;--green:#1a9e5c;--green2:#23c96e;--red:#c0392b;--blue:#2563eb;--text:#e8eaf0;--muted:#5a6880}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#0c1525,#0f1e3a);border-bottom:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 20px #d4a83230}
+h1{font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.sub{font-size:11px;color:var(--muted);letter-spacing:1.5px;margin-top:2px}
+.update-pill{font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 12px;display:flex;align-items:center;gap:6px}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--green2);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 16px;background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',cursive;font-size:13px;font-weight:600;letter-spacing:1.5px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+.tab.active,.tab:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.tab.uzb{color:#23c96e}.tab.uzb.active,.tab.uzb:hover{border-bottom-color:#23c96e}
+
+.page{display:none;max-width:1100px;margin:0 auto;padding:18px 14px;animation:fi .2s ease}
+.page.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.sec{font-family:'Bebas Neue',cursive;font-size:19px;letter-spacing:2px;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:660px){.two-col{grid-template-columns:1fr}}
+
+/* MATCH CARDS */
+.mlist{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:11px 14px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;transition:border-color .15s}
+.mc:hover{border-color:#2e3f5e}
+.mc.uzb{border-color:#1a5c3a;background:#0a1810}
+.mc.live{border-color:#8b0000;animation:livePulse 2s infinite}
+@keyframes livePulse{0%,100%{border-color:#8b0000}50%{border-color:#ff0000}}
+.team{display:flex;align-items:center;gap:7px;font-family:'Barlow Condensed',cursive;font-weight:700;font-size:14.5px}
+.team.r{flex-direction:row-reverse;text-align:right}
+.flag{font-size:19px}
+.uzbt{color:#23c96e}
+.center{display:flex;flex-direction:column;align-items:center;gap:2px}
+.sbox{background:#0d1525;border:1px solid #2a3650;border-radius:8px;padding:4px 12px;text-align:center;min-width:72px}
+.sc{font-family:'Bebas Neue',cursive;font-size:25px;color:var(--gold2);letter-spacing:2px;line-height:1}
+.sc.up{color:var(--muted);font-size:20px}
+.mtime{font-size:10.5px;color:var(--muted);letter-spacing:.4px}
+.venue{font-size:9.5px;color:#344158;max-width:120px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{font-size:9.5px;padding:1px 6px;border-radius:7px;font-family:'Barlow Condensed',cursive;letter-spacing:1px}
+.b-done{background:#0e2a16;color:var(--green2);border:1px solid #1a4a25}
+.b-live{background:#2a0000;color:#ff4444;border:1px solid #660000}
+.b-today{background:#1a2a0e;color:#8bc34a;border:1px solid #2a4015}
+.b-soon{background:#0e1a2a;color:#5b8fc9;border:1px solid #1a3050}
+.grp-badge{position:absolute;top:7px;right:10px;font-size:9px;color:var(--gold);font-family:'Barlow Condensed',cursive;letter-spacing:1px}
+.mc-wrap{position:relative}
+
+/* STANDINGS */
+.sw{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:16px}
+.sw table{width:100%;border-collapse:collapse}
+.sw th{font-family:'Barlow Condensed',cursive;font-size:10.5px;letter-spacing:1.5px;color:var(--muted);padding:8px 5px;border-bottom:1px solid var(--border);text-align:center}
+.sw th:nth-child(2){text-align:left}
+.sw td{padding:8px 5px;text-align:center;font-family:'Barlow Condensed',cursive;font-size:13.5px;border-bottom:1px solid #0e1525}
+.sw td:nth-child(2){text-align:left}
+.sw tr:last-child td{border:none}
+.sw tr:hover td{background:#0d1a2a}
+.pos{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:700;background:var(--border);color:var(--muted)}
+.p1{background:var(--gold)!important;color:#000!important}
+.p2{background:#2563eb!important;color:#fff!important}
+.p3{background:#1a9e5c!important;color:#fff!important}
+.tc{display:flex;align-items:center;gap:6px}
+.pts{font-weight:700;color:var(--gold2);font-size:14px}
+.gd.pos{color:var(--green2)}.gd.neg{color:#e05252}
+.rq1 td{background:#0d1a0e!important}.rq2 td{background:#0d1220!important}.rq3 td{background:#0d1a18!important}
+.uzr td{font-weight:600}
+
+/* OVERVIEW GRID */
+.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.gcard{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px;cursor:pointer;transition:all .15s}
+.gcard:hover{border-color:var(--gold);transform:translateY(-2px)}
+.gcard.uzb{border-color:#1a5c3a}
+.gcardtitle{font-family:'Bebas Neue',cursive;font-size:18px;letter-spacing:2px;color:var(--gold);margin-bottom:7px}
+.mrow{display:flex;align-items:center;justify-content:space-between;padding:3.5px 0;border-bottom:1px solid #0e1525;font-family:'Barlow Condensed',cursive;font-size:12.5px}
+.mrow:last-child{border:none}
+.mt2{display:flex;align-items:center;gap:4px}
+.mpts{color:var(--gold2);font-weight:700}
+
+/* STATS */
+.srow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 14px;flex:1;min-width:90px;text-align:center}
+.snum{font-family:'Bebas Neue',cursive;font-size:30px;color:var(--gold2);line-height:1}
+.slabel{font-size:10px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-top:2px}
+
+/* UZB BANNER */
+.uzb-ban{background:linear-gradient(135deg,#0a1f14,#0d2418);border:1px solid #23c96e40;border-radius:13px;padding:14px 16px;margin-bottom:18px}
+.uzb-ban h3{font-family:'Bebas Neue',cursive;font-size:18px;color:#23c96e;letter-spacing:2px;margin-bottom:8px}
+.uzb-stat{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+
+/* LOADING */
+.loading{text-align:center;padding:60px 20px;color:var(--muted)}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{background:#1a0a0a;border:1px solid #4a1515;border-radius:13px;padding:20px;text-align:center;color:#e05252;margin:20px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🏆</div>
+    <div>
+      <h1>JCH 2026 JONLI KUZATUV</h1>
+      <p class="sub">FIFA Jahon Chempionati • Real vaqt natijalar</p>
+    </div>
+  </div>
+  <div class="update-pill">
+    <div class="dot-live"></div>
+    <span id="lastUpdate">Yuklanmoqda...</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-key="all" onclick="switchTo('all')">BARCHASI</button>
+</nav>
+
+<div id="pages">
+  <div class="page active" id="page-all">
+    <div class="loading"><div class="spinner"></div>Ma'lumotlar yuklanmoqda...</div>
+  </div>
+</div>
+
+<script>
+// O'zbekcha davlat nomlari
+const UZB_NAMES = {
+  "Mexico":"Meksika","South Africa":"Janubiy Afrika","South Korea":"Janubiy Koreya",
+  "Czechia":"Chexiya","Czech Republic":"Chexiya","Canada":"Kanada",
+  "Bosnia and Herzegovina":"Bosniya","Qatar":"Qatar","Switzerland":"Shveytsariya",
+  "Brazil":"Braziliya","Morocco":"Marokash","Scotland":"Shotlandiya","Haiti":"Gaiti",
+  "USA":"AQSh","United States":"AQSh","Paraguay":"Paragvay","Australia":"Avstraliya",
+  "Türkiye":"Turkiya","Turkey":"Turkiya","Germany":"Germaniya","Curaçao":"Kyurasao",
+  "Côte d'Ivoire":"Kot-d'Ivuar","Ivory Coast":"Kot-d'Ivuar","Ecuador":"Ekvador",
+  "Netherlands":"Niderlandiya","Japan":"Yaponiya","Sweden":"Shvetsiya","Tunisia":"Tunis",
+  "Belgium":"Belgiya","Iran":"Eron","Egypt":"Misr","New Zealand":"Yangi Zelandiya",
+  "Spain":"Ispaniya","Cabo Verde":"Kabo-Verde","Cape Verde":"Kabo-Verde",
+  "Saudi Arabia":"Saudiya","Uruguay":"Urugvay","France":"Fransiya","Senegal":"Senegal",
+  "Iraq":"Iroq","Norway":"Norvegiya","Argentina":"Argentina","Algeria":"Jazoir",
+  "Austria":"Avstriya","Jordan":"Iordaniya","Portugal":"Portugaliya",
+  "DR Congo":"Kongo DR","Congo DR":"Kongo DR","Uzbekistan":"O'zbekiston",
+  "Colombia":"Kolumbiya","England":"Angliya","Croatia":"Xorvatiya",
+  "Ghana":"Gana","Panama":"Panama"
+};
+
+const FLAGS = {
+  "Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Czech Republic":"🇨🇿",
+  "Canada":"🇨🇦","Bosnia and Herzegovina":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
+  "Brazil":"🇧🇷","Morocco":"🇲🇦","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Haiti":"🇭🇹",
+  "USA":"🇺🇸","United States":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺",
+  "Türkiye":"🇹🇷","Turkey":"🇹🇷","Germany":"🇩🇪","Curaçao":"🇨🇼",
+  "Côte d'Ivoire":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵",
+  "Sweden":"🇸🇪","Tunisia":"🇹🇳","Belgium":"🇧🇪","Iran":"🇮🇷","Egypt":"🇪🇬",
+  "New Zealand":"🇳🇿","Spain":"🇪🇸","Cabo Verde":"🇨🇻","Cape Verde":"🇨🇻",
+  "Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳",
+  "Iraq":"🇮🇶","Norway":"🇳🇴","Argentina":"🇦🇷","Algeria":"🇩🇿",
+  "Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","DR Congo":"🇨🇩","Congo DR":"🇨🇩",
+  "Uzbekistan":"🇺🇿","Colombia":"🇨🇴","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷",
+  "Ghana":"🇬🇭","Panama":"🇵🇦"
+};
+
+function uz(name){return UZB_NAMES[name]||name}
+function fl(name){return FLAGS[name]||"🏳️"}
+function isUzb(name){return name==="Uzbekistan"}
+
+// Toshkent vaqti
+function tshTime(utcStr){
+  if(!utcStr)return"—";
+  const d=new Date(utcStr);
+  return d.toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Tashkent'});
+}
+function tshDate(utcStr){
+  if(!utcStr)return"";
+  const d=new Date(utcStr);
+  return d.toLocaleDateString('uz-UZ',{day:'2-digit',month:'2-digit',timeZone:'Asia/Tashkent'});
+}
+
+// Guruh harfi (matchday group)
+const GROUP_MAP={
+  "Group A":"A","Group B":"B","Group C":"C","Group D":"D",
+  "Group E":"E","Group F":"F","Group G":"G","Group H":"H",
+  "Group I":"I","Group J":"J","Group K":"K","Group L":"L"
+};
+
+// Status tarjimasi
+function statusBadge(status, minute){
+  if(status==="FINISHED") return `<span class="badge b-done">✓ TUGADI</span>`;
+  if(status==="IN_PLAY"||status==="PAUSED") return `<span class="badge b-live">🔴 JONLI ${minute?minute+"'":""}</span>`;
+  const now=new Date(), today=new Date();
+  return `<span class="badge b-soon">📅 KUTILMOQDA</span>`;
+}
+
+// API dan ma'lumot olish
+async function fetchData(endpoint){
+  const res=await fetch(`/api/matches?endpoint=${endpoint}`);
+  if(!res.ok) throw new Error(`API xatosi: ${res.status}`);
+  return res.json();
+}
+
+// Ballar hisoblash
+function calcStandings(matches, groupName){
+  const stats={};
+  matches.filter(m=>m.group===groupName).forEach(m=>{
+    const h=m.homeTeam.name, a=m.awayTeam.name;
+    if(!stats[h])stats[h]={name:h,mp:0,w:0,d:0,l:0,gf:0,ga:0,pts:0};
+    if(!stats[a])stats[a]={name:a,mp:0,w:0,d:0,l:0,gf:0,ga:0,pts:0};
+    if(m.status!=="FINISHED")return;
+    const hs=m.score.fullTime.home, as_=m.score.fullTime.away;
+    if(hs===null||as_===null)return;
+    stats[h].mp++;stats[a].mp++;
+    stats[h].gf+=hs;stats[h].ga+=as_;
+    stats[a].gf+=as_;stats[a].ga+=hs;
+    if(hs>as_){stats[h].w++;stats[a].l++;stats[h].pts+=3}
+    else if(hs<as_){stats[a].w++;stats[h].l++;stats[a].pts+=3}
+    else{stats[h].d++;stats[a].d++;stats[h].pts++;stats[a].pts++}
+  });
+  return Object.values(stats).sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf);
+}
+
+function renderMatchCard(m, showGroup=false){
+  const hn=m.homeTeam.name, an=m.awayTeam.name;
+  const uzb=isUzb(hn)||isUzb(an);
+  const live=m.status==="IN_PLAY"||m.status==="PAUSED";
+  const done=m.status==="FINISHED";
+  const hs=m.score?.fullTime?.home, as_=m.score?.fullTime?.away;
+  const scoreStr= done&&hs!==null ? `${hs} : ${as_}` : live&&hs!==null ? `${hs} : ${as_}` : `— : —`;
+  const scCls=done||live?"sc":"sc up";
+  const gKey=showGroup&&m.group?m.group.replace("Group ",""):null;
+  const min=m.minute||null;
+
+  return `<div class="mc-wrap">
+    <div class="mc${uzb?" uzb":""}${live?" live":""}">
+      <div class="team"><span class="flag">${fl(hn)}</span><span${isUzb(hn)?' class="uzbt"':''}>${uz(hn)}</span></div>
+      <div class="center">
+        <div class="sbox"><div class="${scCls}">${scoreStr}</div></div>
+        <div class="mtime">${tshDate(m.utcDate)} · ${tshTime(m.utcDate)} TSH</div>
+        <div class="venue">${m.venue||m.homeTeam?.venue||""}</div>
+        ${statusBadge(m.status, min)}
+      </div>
+      <div class="team r"><span class="flag">${fl(an)}</span><span${isUzb(an)?' class="uzbt"':''}>${uz(an)}</span></div>
+    </div>
+    ${gKey?`<span class="grp-badge">GURUH ${gKey}</span>`:''}
+  </div>`;
+}
+
+function renderStandings(matches, groupName){
+  const rows=calcStandings(matches,groupName);
+  const posC=(i)=>i===0?"p1":i===1?"p2":i===2?"p3":"";
+  const rowC=(i)=>i===0?"rq1":i===1?"rq2":i===2?"rq3":"";
+  return `<div class="sw"><table>
+    <thead><tr>
+      <th>#</th><th>JAMOA</th>
+      <th>O</th><th>G</th><th>D</th><th>M</th>
+      <th>UG</th><th>KG</th><th>FF</th><th>BAL</th>
+    </tr></thead>
+    <tbody>
+    ${rows.map((r,i)=>{
+      const gd=r.gf-r.ga;
+      return`<tr class="${rowC(i)}${isUzb(r.name)?" uzr":""}">
+        <td><span class="pos ${posC(i)}">${i+1}</span></td>
+        <td><div class="tc"><span>${fl(r.name)}</span><span${isUzb(r.name)?' style="color:#23c96e"':''}>${uz(r.name)}</span></div></td>
+        <td>${r.mp}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
+        <td>${r.gf}</td><td>${r.ga}</td>
+        <td class="gd ${gd>0?"pos":gd<0?"neg":""}">${gd>0?"+":""}${gd}</td>
+        <td class="pts">${r.pts}</td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+function renderGroupPage(gKey, matches){
+  const groupName=`Group ${gKey}`;
+  const gMatches=matches.filter(m=>m.group===groupName);
+  const done=gMatches.filter(m=>m.status==="FINISHED");
+  const live=gMatches.filter(m=>m.status==="IN_PLAY"||m.status==="PAUSED");
+  const upcoming=gMatches.filter(m=>m.status==="TIMED"||m.status==="SCHEDULED");
+  const isUzbGroup=gKey==="K";
+
+  const st=calcStandings(matches,groupName);
+  const uzbRow=st.find(r=>isUzb(r.name));
+  const uzbPos=st.findIndex(r=>isUzb(r.name))+1;
+
+  return `<div class="page" id="page-${gKey}">
+    <div class="sec">🏅 GURUH ${gKey}${isUzbGroup?' — <span style="color:#23c96e">O\'ZBEKISTON ⭐</span>':''}</div>
+    ${isUzbGroup&&uzbRow?`<div class="uzb-ban">
+      <h3>🇺🇿 O'ZBEKISTON HOLATI</h3>
+      <div class="uzb-stat">
+        <span style="font-family:'Bebas Neue',cursive;font-size:26px;color:#23c96e">
+          ${uzbPos===1?"🥇 1-O'RIN":uzbPos===2?"🥈 2-O'RIN":uzbPos===3?"🥉 3-O'RIN":"4-O'RIN"}
+        </span>
+        <span style="color:#23c96e;font-size:14px">
+          ${uzbPos<=2?"✅ PLAYOFF GA CHIQMOQDA":uzbPos===3?"⚠️ EHTIMOLIY":  "❌ TASHQARIDA"}
+        </span>
+        <span style="color:var(--muted);font-size:13px">${uzbRow.pts} ball · FF: ${uzbRow.gf-uzbRow.ga>0?"+":''}${uzbRow.gf-uzbRow.ga}</span>
+      </div>
+    </div>`:''}
+    <div class="two-col">
+      <div>
+        <div class="sec" style="font-size:16px">📊 TURNIR JADVALI</div>
+        ${renderStandings(matches,groupName)}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:11px;color:var(--muted)">
+          <span>🟡 1-o'rin → Playoff</span>
+          <span>🔵 2-o'rin → Playoff</span>
+          <span>🟢 3-o'rin → Ehtimol</span>
+        </div>
+      </div>
+      <div>
+        ${live.length?`<div class="sec" style="font-size:16px;color:#ff4444">🔴 JONLI O'YINLAR</div>
+        <div class="mlist">${live.map(m=>renderMatchCard(m)).join('')}</div>`:''}
+        ${done.length?`<div class="sec" style="font-size:16px">✅ TUGAGAN O'YINLAR</div>
+        <div class="mlist">${done.map(m=>renderMatchCard(m)).join('')}</div>`:''}
+        ${upcoming.length?`<div class="sec" style="font-size:16px">📅 KELGUSI O'YINLAR</div>
+        <div class="mlist">${upcoming.map(m=>renderMatchCard(m)).join('')}</div>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+async function init(){
+  try{
+    const data=await fetchData('matches');
+    const matches=data.matches||[];
+
+    // Guruhlarni ajrat
+    const groups={};
+    matches.forEach(m=>{
+      if(!m.group)return;
+      const k=m.group.replace("Group ","");
+      if(!groups[k])groups[k]=[];
+      groups[k].push(m);
+    });
+
+    const now=new Date();
+    const today=matches.filter(m=>{
+      const d=new Date(m.utcDate);
+      const tsh=new Date(d.getTime()+5*3600000);
+      const n=new Date(now.getTime()+5*3600000);
+      return tsh.toDateString()===n.toDateString();
+    });
+    const live=matches.filter(m=>m.status==="IN_PLAY"||m.status==="PAUSED");
+    const recent=matches.filter(m=>m.status==="FINISHED").slice(-8);
+
+    let totalGoals=0,totalPlayed=0;
+    matches.forEach(m=>{
+      if(m.status==="FINISHED"&&m.score?.fullTime?.home!==null){
+        totalGoals+=(m.score.fullTime.home||0)+(m.score.fullTime.away||0);
+        totalPlayed++;
+      }
+    });
+
+    // Overview sahifasi
+    const overviewHtml=`
+    <div class="srow">
+      <div class="scard"><div class="snum">${totalPlayed}</div><div class="slabel">TUGAGAN</div></div>
+      <div class="scard"><div class="snum">${totalGoals}</div><div class="slabel">GOLLAR</div></div>
+      <div class="scard"><div class="snum">${totalPlayed?( totalGoals/totalPlayed).toFixed(1):"—"}</div><div class="slabel">O'RTACHA GOL</div></div>
+      <div class="scard"><div class="snum">48</div><div class="slabel">JAMOALAR</div></div>
+    </div>
+    ${live.length?`<div class="sec">🔴 HOZIR JONLI</div>
+    <div class="mlist">${live.map(m=>renderMatchCard(m,true)).join('')}</div>`:''}
+    ${today.length?`<div class="sec">⚡ BUGUNGI O'YINLAR</div>
+    <div class="mlist">${today.map(m=>renderMatchCard(m,true)).join('')}</div>`:''}
+    <div class="sec">✅ SO'NGGI NATIJALAR</div>
+    <div class="mlist">${recent.map(m=>renderMatchCard(m,true)).join('')}</div>
+    <div class="sec">📊 BARCHA GURUHLAR</div>
+    <div class="ogrid">
+    ${Object.keys(groups).sort().map(gk=>{
+      const st=calcStandings(matches,`Group ${gk}`);
+      const isUzbG=gk==="K";
+      return`<div class="gcard${isUzbG?" uzb":""}" onclick="switchTo('${gk}')">
+        <div class="gcardtitle">GURUH ${gk}${isUzbG?' ⭐':''}</div>
+        ${st.map((r,i)=>`<div class="mrow">
+          <div class="mt2"><span>${fl(r.name)}</span>
+          <span${isUzb(r.name)?' style="color:#23c96e"':''}${i<2?' style="font-weight:700"':''}>${uz(r.name)}</span>
+          ${i<2?'<span style="font-size:9px;color:#2563eb;margin-left:2px">▲</span>':''}
+          </div>
+          <span class="mpts">${r.pts}</span>
+        </div>`).join('')}
+      </div>`;
+    }).join('')}
+    </div>`;
+
+    document.getElementById('page-all').innerHTML=overviewHtml;
+
+    // Guruh tablar va sahifalar
+    const tabsEl=document.getElementById('tabs');
+    const pagesEl=document.getElementById('pages');
+    Object.keys(groups).sort().forEach(gk=>{
+      const btn=document.createElement('button');
+      btn.className='tab'+(gk==="K"?" uzb":"");
+      btn.textContent=gk==="K"?"K ⭐":gk;
+      btn.dataset.key=gk;
+      btn.onclick=()=>switchTo(gk);
+      tabsEl.appendChild(btn);
+      pagesEl.insertAdjacentHTML('beforeend',renderGroupPage(gk,matches));
+    });
+
+    // Vaqt yangilash
+    const t=new Date();
+    const tsh=new Date(t.getTime()+5*3600000);
+    document.getElementById('lastUpdate').textContent=
+      `Yangilandi: ${tsh.toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit'})} TSH`;
+
+    // Har 60 soniyada avtomatik yangilash (jonli o'yinlar uchun)
+    setTimeout(()=>location.reload(), 60000);
+
+  }catch(err){
+    document.getElementById('page-all').innerHTML=
+      `<div class="err">⚠️ Ma'lumot yuklanmadi: ${err.message}<br><br>
+      <button onclick="location.reload()" style="background:var(--gold);color:#000;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-family:'Barlow Condensed',cursive;font-size:14px;letter-spacing:1px">QAYTA URINISH</button></div>`;
+  }
+}
+
+function switchTo(key){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const pg=document.getElementById(`page-${key}`);
+  if(pg)pg.classList.add('active');
+  const tb=document.querySelector(`[data-key="${key}"]`);
+  if(tb)tb.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+init();
+</script>
+</body>
+</html>
