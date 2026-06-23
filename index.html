@@ -418,7 +418,11 @@ function renderThirdPage() {
 function renderOverview() {
   var live = ALL_MATCHES.filter(isLive);
   var done = ALL_MATCHES.filter(isDone);
-  var today = ALL_MATCHES.filter(function(m) { return isToday(m.utcDate) && !isDone(m) && !isLive(m); });
+  // Hali bo'lmagan o'yinlar — vaqt bo'yicha saralab, eng yaqin 8 ta
+  var now = new Date();
+  var today = ALL_MATCHES.filter(function(m) {
+    return !isDone(m) && !isLive(m) && m.utcDate && new Date(m.utcDate) > now;
+  }).sort(function(a,b){ return new Date(a.utcDate)-new Date(b.utcDate); }).slice(0,8);
   var recent = done.slice().reverse().slice(0, 8);
 
   var totalG = 0;
@@ -431,7 +435,7 @@ function renderOverview() {
     ? '<div class="sec" style="color:#ff4444">&#x1F534; HOZIR JONLI</div><div class="mlist">' + live.map(function(m){return renderMC(m,true);}).join("") + '</div>'
     : "";
   var todayHTML = today.length
-    ? '<div class="sec">&#x26A1; BUGUNGI O\'YINLAR</div><div class="mlist">' + today.map(function(m){return renderMC(m,true);}).join("") + '</div>'
+    ? '<div class="sec">&#x26A1; KUTILAYOTGAN O\'YINLAR</div><div class="mlist">' + today.map(function(m){return renderMC(m,true);}).join("") + '</div>'
     : "";
   var recentHTML = recent.length
     ? recent.map(function(m){return renderMC(m,true);}).join("")
