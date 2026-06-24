@@ -358,6 +358,110 @@ function renderGroupPage(gKey) {
     + '</div>';
 }
 
+
+// =============================================================
+// PLAYOFF
+// =============================================================
+function stageUz(s) {
+  if(s==='ROUND_OF_32'||s==='LAST_32') return '32 TA ICHIDA';
+  if(s==='ROUND_OF_16'||s==='LAST_16') return '16 TA ICHIDA';
+  if(s==='QUARTER_FINALS') return 'CHORAK FINAL';
+  if(s==='SEMI_FINALS') return 'YARIM FINAL';
+  if(s==='THIRD_PLACE'||s==='THIRD_PLACE_MATCH') return '3-O'RIN UCHUN';
+  if(s==='FINAL') return 'FINAL';
+  return s||'PLAYOFF';
+}
+
+function stageOrder(s) {
+  var o = {'ROUND_OF_32':1,'LAST_32':1,'ROUND_OF_16':2,'LAST_16':2,
+    'QUARTER_FINALS':3,'SEMI_FINALS':4,'THIRD_PLACE':5,'THIRD_PLACE_MATCH':5,'FINAL':6};
+  return o[s]||99;
+}
+
+function renderPlayoffMatch(m) {
+  var hn = m.homeTeam && m.homeTeam.name || '';
+  var an = m.awayTeam && m.awayTeam.name || '';
+  var sc = getScore(m);
+  var done = isDone(m);
+  var live = isLive(m);
+  var scoreStr = (done||live) && sc.h!==null ? sc.h+' : '+sc.a : '- : -';
+  var scCls = (done||live) ? 'sc' : 'sc up';
+  var badge = live
+    ? '<span class="bdg b-live">&#x1F534; JONLI</span>'
+    : done ? '<span class="bdg b-done">&#x2713; TUGADI</span>'
+    : '<span class="bdg b-soon">&#x1F4C5; '+tshDate(m.utcDate)+'</span>';
+
+  // Agar jamoa nomi "Winner"/"Runner"/"3rd" bilan boshlanса — placeholder
+  var hDisplay = (hn&&(hn.indexOf('Winner')>-1||hn.indexOf('Runner')>-1||hn.indexOf('3rd')>-1||hn.indexOf('Loser')>-1))
+    ? '<span style="color:var(--muted);font-size:12px">'+hn+'</span>'
+    : fl(hn)+'<span'+(isUzb(hn)?' class="uzbt"':'')+'>'+uz(hn)+'</span>';
+  var aDisplay = (an&&(an.indexOf('Winner')>-1||an.indexOf('Runner')>-1||an.indexOf('3rd')>-1||an.indexOf('Loser')>-1))
+    ? '<span style="color:var(--muted);font-size:12px">'+an+'</span>'
+    : fl(an)+'<span'+(isUzb(an)?' class="uzbt"':'')+'>'+uz(an)+'</span>';
+
+  return '<div class="mc'+(live?' live':'')+(isUzb(hn)||isUzb(an)?' uzb':'')+'" style="margin-bottom:8px">'
+    +'<div class="team">'+hDisplay+'</div>'
+    +'<div class="ctr">'
+    +'<div class="sbox"><div class="'+scCls+'">'+scoreStr+'</div></div>'
+    +'<div class="mt">'+tshDate(m.utcDate)+' &#x2022; '+tshTime(m.utcDate)+' TSH</div>'
+    +'<div class="vn">'+(m.venue||'')+'</div>'
+    +badge
+    +'</div>'
+    +'<div class="team r">'+aDisplay+'</div>'
+    +'</div>';
+}
+
+function renderPlayoff() {
+  // GROUP_STAGE ni chiqarib tashlaymiz
+  var ms = ALL_MATCHES.filter(function(m) {
+    var s = m.stage||'';
+    return s !== 'GROUP_STAGE' && s !== '';
+  });
+
+  if(!ms.length) {
+    document.getElementById('page-playoff').innerHTML =
+      '<div class="sec">&#x1F3C6; PLAYOFF BRACKET</div>'
+      +'<div class="info-box" style="text-align:center;padding:30px">'
+      +'<div style="font-size:40px;margin-bottom:10px">&#x23F3;</div>'
+      +'<div style="color:var(--gold);font-size:16px;font-family:'Bebas Neue',cursive;letter-spacing:2px">PLAYOFF 28-IYUNDA BOSHLANADI</div>'
+      +'<div style="color:var(--muted);font-size:12px;margin-top:8px">Guruh bosqichi 27-iyunda tugagach jamoalar aniqlanadi</div>'
+      +'</div>';
+    return;
+  }
+
+  // Bosqichlarga ajratamiz
+  var stageMap = {};
+  ms.forEach(function(m) {
+    var s = m.stage||'UNKNOWN';
+    if(!stageMap[s]) stageMap[s] = [];
+    stageMap[s].push(m);
+  });
+
+  // Bosqichlarni tartiblaymiz
+  var stages = Object.keys(stageMap).sort(function(a,b) {
+    return stageOrder(a)-stageOrder(b);
+  });
+
+  var html = '<div class="sec">&#x1F3C6; PLAYOFF BRACKET</div>'
+    +'<div class="info-box">'
+    +'JCH 2026: 32 ta jamoa playoff bosqichiga chiqadi. '
+    +'<span style="color:var(--gold)">12 guruh g'oliblar + 12 ikkinchi o'rinchilar + 8 ta eng yaxshi 3-o'rinchilar.</span>'
+    +'</div>';
+
+  stages.forEach(function(s) {
+    var matches = stageMap[s];
+    matches.sort(function(a,b){return new Date(a.utcDate)-new Date(b.utcDate);});
+    html += '<div class="sec" style="font-size:16px;color:#ff6b35">&#x26BD; '+stageUz(s)+'</div>'
+      +'<div class="two-col">';
+    matches.forEach(function(m) {
+      html += '<div>'+renderPlayoffMatch(m)+'</div>';
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('page-playoff').innerHTML = html;
+}
+
 // =============================================================
 // THIRD PLACE PAGE
 // =============================================================
@@ -492,7 +596,8 @@ function buildNav() {
   // Barcha sahifalar HTML
   var pagesHTML = '<div class="page active" id="page-all"><div class="loading"><div class="spin"></div>Yuklanmoqda...</div></div>';
   GROUPS.forEach(function(gk) { pagesHTML += '<div class="page" id="page-' + gk + '"></div>'; });
-  pagesHTML += '<div class="page" id="page-third"></div>';
+  pagesHTML += '<div class="page" id="page-playoff"></div>
+  <div class="page" id="page-third"></div>';
   pages.innerHTML = pagesHTML;
 
   // Tablar
@@ -517,6 +622,7 @@ function init() {
       renderOverview();
       GROUPS.forEach(function(gk) { renderGroupPage(gk); });
       renderThirdPage();
+    renderPlayoff();
       var t = new Date();
       var tsh = new Date(t.getTime() + 5*3600000);
       document.getElementById("upd").textContent =
