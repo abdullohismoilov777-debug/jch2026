@@ -213,12 +213,16 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
   <div class="side-item active" id="smain" onclick="goPage('main');closeSideMenu()">
     <span class="side-icon">&#x1F3E0;</span><span id="t_menu_main">ASOSIY</span>
   </div>
+  <div class="side-item" id="sgroup" onclick="goPage('group_view');closeSideMenu()">
+    <span class="side-icon">&#x1F4CA;</span><span id="t_menu_group">GURUH BOSQICHI</span>
+  </div>
   <div class="side-item" id="ssched" onclick="goPage('sched');closeSideMenu()">
     <span class="side-icon">&#x1F4C5;</span><span id="t_menu_sched">JADVALLAR</span>
   </div>
-  <div class="side-item" id="stopscorers" onclick="goPage('scorers');closeSideMenu()">
-    <span class="side-icon">&#x26BD;</span><span id="t_menu_top">TOP URАРLAR</span>
+  <div class="side-item" id="sstats" onclick="goPage('stats');closeSideMenu()">
+    <span class="side-icon">&#x1F4CA;</span><span id="t_menu_stats">STATISTIKA</span>
   </div>
+
 </div>
 
 <!-- HEADER -->
@@ -250,8 +254,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 
 <!-- MAIN 2 TABS -->
 <div class="main-tabs" id="mainTabs">
-  <button class="main-tab active" id="btn-group" onclick="showSection('group')" id="t_group_tab">
-    &#x1F4CA; <span id="t_group_label">GURUH BOSQICHI</span>
+  <button class="main-tab active" id="btn-main" onclick="goPage('main')">
+    &#x1F3E0; <span id="t_main_label">ASOSIY</span>
   </button>
   <button class="main-tab po" id="btn-playoff" onclick="showSection('playoff')">
     &#x1F3C6; <span id="t_playoff_label">PLAYOFF BOSQICHI</span>
@@ -277,8 +281,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 <!-- SCHEDULE PAGE -->
 <div id="schedPage" class="page" style="display:none"></div>
 
-<!-- SCORERS PAGE -->
-<div id="scorersPage" class="page" style="display:none"></div>
+
 
 <script>
 // ============================================================
@@ -286,7 +289,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 // ============================================================
 var LANGS = {
   uz: {
-    menu_main:"ASOSIY", menu_sched:"JADVALLAR", menu_top:"TOP URАРLAR",
+    menu_main:"ASOSIY", menu_group:"GURUH BOSQICHI", menu_stats:"STATISTIKA", menu_sched:"JADVALLAR", menu_top:"TOP URАРLAR",
     group_label:"GURUH BOSQICHI", playoff_label:"PLAYOFF BOSQICHI",
     finished:"TUGADI", live_txt:"JONLI", upcoming:"KELGUSI", today:"BUGUN",
     standings:"TURNIR JADVALI", matches:"O'YINLAR", goals:"GOLLAR",
@@ -325,7 +328,7 @@ var LANGS = {
     }
   },
   ru: {
-    menu_main:"ГЛАВНАЯ", menu_sched:"РАСПИСАНИЕ", menu_top:"БОМБАРДИРЫ",
+    menu_main:"ГЛАВНАЯ", menu_group:"ГРУППОВОЙ ЭТАП", menu_stats:"СТАТИСТИКА", menu_sched:"РАСПИСАНИЕ", menu_top:"БОМБАРДИРЫ",
     group_label:"ГРУППОВОЙ ЭТАП", playoff_label:"ПЛЕЙ-ОФФ",
     finished:"ЗАВЕРШЁН", live_txt:"В ИГРЕ", upcoming:"ПРЕДСТОЯЩИЕ", today:"СЕГОДНЯ",
     standings:"ТАБЛИЦА", matches:"МАТЧИ", goals:"ГОЛЫ",
@@ -364,7 +367,7 @@ var LANGS = {
     }
   },
   en: {
-    menu_main:"HOME", menu_sched:"SCHEDULE", menu_top:"TOP SCORERS",
+    menu_main:"HOME", menu_group:"GROUP STAGE", menu_stats:"STATISTICS", menu_sched:"SCHEDULE", menu_top:"TOP SCORERS",
     group_label:"GROUP STAGE", playoff_label:"PLAYOFF",
     finished:"FINISHED", live_txt:"LIVE", upcoming:"UPCOMING", today:"TODAY",
     standings:"STANDINGS", matches:"MATCHES", goals:"GOALS",
@@ -425,8 +428,8 @@ document.addEventListener("click", function(e) {
 
 function applyLangTexts() {
   var ids = {
-    t_menu_main:"menu_main", t_menu_sched:"menu_sched", t_menu_top:"menu_top",
-    t_group_label:"group_label", t_playoff_label:"playoff_label"
+    t_menu_main:"menu_main", t_menu_group:"menu_group", t_menu_sched:"menu_sched", t_menu_stats:"menu_stats",
+    t_main_label:"menu_main", t_playoff_label:"playoff_label"
   };
   for(var id in ids) {
     var el = document.getElementById(id);
@@ -741,6 +744,26 @@ function renderMain() {
       +"</div>";
   }).join("");
 
+  // Scorers ni ham yuklаymiz
+  var scorersHTML = "";
+  if(ALL_SCORERS.length) {
+    scorersHTML = "<div class=\"sec\">&#x26BD; "+T("scorers_title")+"</div><div class=\"scorer-list\">";
+    ALL_SCORERS.slice(0,10).forEach(function(s,i){
+      var noCls=i===0?"top1":i===1?"top2":i===2?"top3":"";
+      var tn=s.team&&s.team.name||"";
+      scorersHTML+="<div class=\"scorer\">"
+        +"<div class=\"scorer-no "+noCls+"\">"+( i+1)+"</div>"
+        +"<div class=\"scorer-info\">"
+        +"<div class=\"scorer-name\">"+(s.player&&s.player.name||"--")+"</div>"
+        +"<div class=\"scorer-team\">"+fl(tn)+tName(tn)+"</div>"
+        +"</div>"
+        +"<div><span class=\"scorer-goals\">"+(s.goals||0)+"</span>"
+        +"<span class=\"scorer-ball\"> &#x26BD;</span></div>"
+        +"</div>";
+    });
+    scorersHTML += "</div>";
+  }
+
   el.innerHTML="<div class=\"srow\">"
     +"<div class=\"sc2\"><div class=\"sn\">"+done.length+"</div><div class=\"sl\">"+T("played")+"</div></div>"
     +"<div class=\"sc2\"><div class=\"sn\">"+totalG+"</div><div class=\"sl\">"+T("goals")+"</div></div>"
@@ -749,6 +772,7 @@ function renderMain() {
     +"</div>"
     +lH+uH
     +"<div class=\"sec\">&#x2705; "+T("recent")+"</div>"+rH
+    +scorersHTML
     +"<div class=\"sec\">&#x1F4CA; "+T("all_groups")+"</div>"
     +"<div class=\"ogrid\">"+gridHTML+"</div>";
   startLiveTimers();
@@ -803,8 +827,60 @@ function renderSched() {
 function setSchedFilter(f){schedFilter=f;renderSched();}
 
 // ============================================================
-// GOLCHILAR SAHIFASI
+// STATISTIKA SAHIFASI (to'liq)
 // ============================================================
+function renderStats() {
+  var el=document.getElementById("statsPage");
+  if(!el) return;
+  var done=ALL_MATCHES.filter(isDone);
+  var live=ALL_MATCHES.filter(isLive);
+  var totalG=0;
+  done.forEach(function(m){var sc=getScore(m);if(sc.h!==null&&sc.a!==null)totalG+=sc.h+sc.a;});
+
+  function card(val,lbl){
+    return '<div class="sc2"><div class="sn">'+val+'</div><div class="sl">'+lbl+'</div></div>';
+  }
+
+  var statsHTML='<div class="sec">&#x1F4CA; TURNIR STATISTIKASI</div>'
+    +'<div class="srow">'
+    +card(done.length, T("played"))
+    +card(totalG, T("goals"))
+    +card(done.length?(totalG/done.length).toFixed(2):"--", T("avg"))
+    +card(48, T("teams"))
+    +'</div>'
+    +'<div class="srow">'
+    +card(live.length, T("live_txt"))
+    +card(104-done.length, "QOLGAN")
+    +card(12, "GURUH")
+    +card(16, "SHAHAR")
+    +'</div>';
+
+  if(!ALL_SCORERS.length){
+    el.innerHTML=statsHTML+'<div class="loading"><div class="spin"></div></div>';
+    fetchScorers().then(function(s){ALL_SCORERS=s;renderStats();}).catch(function(){
+      el.innerHTML=statsHTML+'<div class="err-box">&#x26A0;&#xFE0F; Xatolik</div>';
+    });
+    return;
+  }
+
+  var scorersHTML='<div class="sec">&#x26BD; '+T("scorers_title")+'</div><div class="scorer-list">';
+  ALL_SCORERS.slice(0,20).forEach(function(s,i){
+    var noCls=i===0?"top1":i===1?"top2":i===2?"top3":"";
+    var tn=s.team&&s.team.name||"";
+    scorersHTML+='<div class="scorer">'
+      +'<div class="scorer-no '+noCls+'">'+(i+1)+'</div>'
+      +'<div class="scorer-info">'
+      +'<div class="scorer-name">'+(s.player&&s.player.name||"--")+'</div>'
+      +'<div class="scorer-team">'+fl(tn)+tName(tn)+'</div>'
+      +'</div>'
+      +'<div><span class="scorer-goals">'+(s.goals||0)+'</span>'
+      +'<span class="scorer-ball"> &#x26BD;</span></div>'
+      +'</div>';
+  });
+  scorersHTML+='</div>';
+  el.innerHTML=statsHTML+scorersHTML;
+}
+
 function renderScorers() {
   var el=document.getElementById("scorersPage");
   if(!el) return;
@@ -1007,13 +1083,13 @@ var currentGroupTab = "A";
 function showSection(s) {
   currentSection = s;
   try{localStorage.setItem("jch_section",s);}catch(e){}
-  document.getElementById("groupSection").style.display = s==="group"?"block":"none";
   document.getElementById("playoffSection").style.display = s==="playoff"?"block":"none";
-  document.getElementById("btn-group").classList.toggle("active", s==="group");
-  document.getElementById("btn-playoff").classList.toggle("active", s==="playoff");
+  document.getElementById("groupSection").style.display = "none";
   document.getElementById("mainPage").style.display = "none";
   document.getElementById("schedPage").style.display = "none";
   document.getElementById("scorersPage").style.display = "none";
+  document.getElementById("btn-main").classList.remove("active");
+  document.getElementById("btn-playoff").classList.toggle("active", s==="playoff");
   if(s==="playoff") renderPlayoff();
   window.scrollTo(0,0);
 }
@@ -1021,20 +1097,20 @@ function showSection(s) {
 function goPage(p) {
   currentPage = p;
   try{localStorage.setItem("jch_page",p);}catch(e){}
-  document.getElementById("groupSection").style.display = "none";
+  document.getElementById("groupSection").style.display = p==="group_view"?"block":"none";
   document.getElementById("playoffSection").style.display = "none";
   document.getElementById("mainPage").style.display = p==="main"?"block":"none";
   document.getElementById("schedPage").style.display = p==="sched"?"block":"none";
-  document.getElementById("scorersPage").style.display = p==="scorers"?"block":"none";
-  document.getElementById("btn-group").classList.remove("active");
+
+  document.getElementById("btn-main").classList.toggle("active", p==="main");
   document.getElementById("btn-playoff").classList.remove("active");
   document.querySelectorAll(".side-item").forEach(function(el){el.classList.remove("active");});
-  var sid = p==="main"?"smain":p==="sched"?"ssched":p==="scorers"?"stopscorers":"smain";
+  var sid = p==="main"?"smain":p==="group_view"?"sgroup":p==="sched"?"ssched":p==="stats"?"sstats":"smain";
   var el=document.getElementById(sid);
   if(el) el.classList.add("active");
   if(p==="main") renderMain();
   else if(p==="sched") renderSched();
-  else if(p==="scorers") renderScorers();
+  else if(p==="stats") renderStats();
   window.scrollTo(0,0);
 }
 
@@ -1048,7 +1124,7 @@ function switchGroupTab(key) {
     document.getElementById("scorersPage").style.display="none";
     document.getElementById("playoffSection").style.display="none";
     document.getElementById("groupSection").style.display="block";
-    document.getElementById("btn-group").classList.add("active");
+    document.getElementById("btn-main").classList.remove("active");
     document.getElementById("btn-playoff").classList.remove("active");
   }
   document.querySelectorAll(".g-page").forEach(function(p){p.style.display="none";});
@@ -1111,7 +1187,7 @@ function reRenderAll() {
   GROUPS.forEach(function(gk){renderGroupPage(gk);});
   renderThirdPage();
   if(schedFilter) renderSched();
-  if(ALL_SCORERS.length) renderScorers();
+  if(ALL_SCORERS.length) renderStats();
   if(currentSection==="playoff") renderPlayoff();
 }
 
@@ -1136,6 +1212,11 @@ function init(){
     GROUPS.forEach(function(gk){renderGroupPage(gk);});
     renderThirdPage();
     renderSched();
+    // Scorers ni background da yuklaymiz
+    fetchScorers().then(function(s){
+      ALL_SCORERS=s;
+      renderMain(); // scorers bilan qayta render
+    }).catch(function(){});
     updateClock();
     startLiveTimers();
     var hasLive=ALL_MATCHES.some(isLive);
@@ -1144,14 +1225,18 @@ function init(){
       var savedSection=localStorage.getItem("jch_section");
       var savedPage=localStorage.getItem("jch_page");
       var savedGTab=localStorage.getItem("jch_gtab")||"A";
-      if(savedPage&&savedPage!=="group_view"){
-        goPage(savedPage);
-      } else if(savedSection==="playoff"){
+      if(savedSection==="playoff"){
         showSection("playoff");
-      } else {
+      } else if(savedPage==="group_view"){
         switchGroupTab(savedGTab);
+      } else if(savedPage==="sched"){
+        goPage("sched");
+      } else if(savedPage==="scorers"){
+        goPage("scorers");
+      } else {
+        goPage("main");
       }
-    }catch(e){switchGroupTab("A");}
+    }catch(e){goPage("main");}
   }).catch(function(err){
     document.getElementById("mainPage").innerHTML="<div class=\"err-box\">&#x26A0;&#xFE0F; "+err.message
       +"<br><button class=\"retry-btn\" onclick=\"init()\">&#x1F504; Qayta</button></div>";
