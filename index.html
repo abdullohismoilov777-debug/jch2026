@@ -9,7 +9,6 @@
 :root{--bg:#06080f;--card:#0f1623;--border:#1e2a42;--gold:#d4a832;--gold2:#f5d06a;--green:#23c96e;--blue:#2563eb;--text:#e8eaf0;--muted:#5a6880}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;font-size:14px}
-/* HEADER */
 .hdr{background:linear-gradient(135deg,#0a1020,#0d1835);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:300}
 .hbtn{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px}
 .hbtn:hover{background:#1e2a42}
@@ -18,7 +17,6 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .htitle{font-size:16px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hsub{font-size:10px;color:var(--muted)}
 .hright{display:flex;align-items:center;gap:8px;flex-shrink:0}
-/* LANG */
 .lbtn{position:relative}
 .lsel{background:#0d1525;border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px}
 .ldrop{position:absolute;top:calc(100% + 4px);right:0;background:#0d1525;border:1px solid var(--border);border-radius:10px;overflow:hidden;z-index:400;min-width:130px;display:none;box-shadow:0 8px 24px #000a}
@@ -26,46 +24,37 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .lopt{padding:9px 14px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
 .lopt:hover{background:#1e2a42}
 .lopt.on{color:var(--gold)}
-/* CLOCK */
 .upill{font-size:10px;color:var(--muted);background:#0d1120;border:1px solid var(--border);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:4px;white-space:nowrap}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-/* SIDEMENU */
 .ovl{position:fixed;inset:0;background:#0006;z-index:400;display:none}
-.ovl.on{display:block}
+.ovl.open{display:block}
 .smenu{position:fixed;top:0;left:-260px;width:260px;height:100vh;background:#0a0e1e;border-right:1px solid var(--border);z-index:500;transition:left .25s;overflow-y:auto}
-.smenu.on{left:0}
+.smenu.open{left:0}
 .smhdr{padding:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .smtitle{font-size:15px;font-weight:800;color:var(--gold);flex:1}
 .smclose{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer}
 .smitem{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;font-size:13px;font-weight:700;border-bottom:1px solid #0e1525;transition:.15s;color:var(--muted)}
-.smitem:hover{background:#1e2a42;color:var(--gold)}
-.smitem.on{background:#0d1525;color:var(--gold)}
+.smitem:hover,.smitem.on{background:#1e2a42;color:var(--gold)}
 .smicon{font-size:17px;width:22px;text-align:center}
-/* MAIN 2 TABS */
 .mtabs{display:flex;background:#080c18;border-bottom:2px solid var(--border)}
 .mtab{flex:1;padding:12px 8px;background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border-bottom:3px solid transparent;transition:.2s;text-align:center}
 .mtab.on{color:var(--gold);border-bottom-color:var(--gold);background:#0a0f1e}
 .mtab.po.on{color:#ff6b35;border-bottom-color:#ff6b35}
-/* GROUP SUB TABS */
 .gtabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg);scrollbar-width:none;position:sticky;top:57px;z-index:200}
 .gtabs::-webkit-scrollbar{display:none}
 .gtab{padding:8px 13px;background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.15s}
 .gtab:hover,.gtab.on{color:var(--gold);border-bottom-color:var(--gold)}
 .gtab.uzb{color:var(--green)}.gtab.uzb.on{border-bottom-color:var(--green)}
-/* FILTER */
 .fwrap{padding:10px 14px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
 .fwrap::-webkit-scrollbar{display:none}
 .ftab{padding:5px 12px;background:#0d1525;border:1px solid var(--border);border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);white-space:nowrap;transition:.15s}
 .ftab.on,.ftab:hover{background:#1e2a42;color:var(--gold);border-color:var(--gold)}
-/* PAGES */
 .pg{display:none;max-width:1060px;margin:0 auto;padding:14px}
 .pg.on{display:block;animation:fi .2s ease}
 @keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-/* SEC TITLE */
 .sec{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px;padding-top:4px}
 .sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
-/* MATCH CARD */
 .mlist{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
 .mc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:9px 12px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;position:relative}
 .mc.uzb{border-color:#1a5c3a;background:#0a1810}
@@ -86,10 +75,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .blive{background:#2a0000;color:#ff4444;border:1px solid #660000}
 .bsoon{background:#0e1a2a;color:#5b8fc9;border:1px solid #1a3050}
 .gbdg{position:absolute;top:5px;right:8px;font-size:9px;color:var(--gold);font-weight:700}
-/* LIVE TIMER */
 .ltimer{display:inline-flex;align-items:center;gap:4px;background:#1a0000;border:1px solid #660000;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:800;color:#ff4444}
-.ldot{width:5px;height:5px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite}
-/* STANDINGS */
+.ldot2{width:5px;height:5px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite}
 .sw{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}
 .sw table{width:100%;border-collapse:collapse}
 .sw th{font-size:9px;letter-spacing:1px;color:var(--muted);padding:6px 4px;border-bottom:1px solid var(--border);text-align:center;font-weight:700}
@@ -108,18 +95,14 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .uzr td{font-weight:800}
 .tc{display:flex;align-items:center;gap:5px}
 .tc img{width:17px;height:12px;border-radius:1px;object-fit:cover}
-/* STAT CARDS */
 .srow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .scard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;flex:1;min-width:70px;text-align:center}
 .snum{font-size:24px;font-weight:900;color:var(--gold2);line-height:1}
 .slbl{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:3px;font-weight:600}
-/* UZB BANNER */
 .uban{background:linear-gradient(135deg,#071510,#0a1f14);border:1px solid #23c96e40;border-radius:12px;padding:12px 14px;margin-bottom:14px}
 .uban h3{font-size:13px;font-weight:800;color:var(--green);letter-spacing:1px;margin-bottom:6px}
 .ubans{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-/* INFO BOX */
 .ibox{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.7}
-/* GROUP GRID */
 .ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 .gcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px;cursor:pointer;transition:.15s}
 .gcard:hover{border-color:var(--gold);transform:translateY(-2px)}
@@ -130,9 +113,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .grt{display:flex;align-items:center;gap:4px}
 .grt img{width:15px;height:11px;border-radius:1px;object-fit:cover}
 .gpts{color:var(--gold2);font-weight:800}
-/* DATE GROUP */
 .dglbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;padding:8px 0 4px;text-transform:uppercase}
-/* SCORERS */
 .sclist{display:flex;flex-direction:column;gap:6px}
 .scitem{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:10px}
 .scno{font-size:13px;font-weight:800;color:var(--muted);min-width:22px}
@@ -142,10 +123,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .scteam{font-size:10px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px}
 .scteam img{width:15px;height:11px;border-radius:1px;object-fit:cover}
 .scgoals{font-size:20px;font-weight:900;color:var(--gold2)}
-/* TWO COL */
 .tcol{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:640px){.tcol{grid-template-columns:1fr}}
-/* BRACKET */
 .brkouter{overflow-x:auto;padding-bottom:10px}
 .brkflex{display:flex;align-items:stretch;gap:0;min-width:1080px}
 .brkrnd{display:flex;flex-direction:column;flex:1;min-width:132px}
@@ -166,7 +145,6 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .brkconn{width:20px;align-self:stretch;flex-shrink:0}
 .brkfinal{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0;width:148px}
 .brkfinalbox{background:linear-gradient(135deg,#120e00,#1e1800);border:2px solid var(--gold);border-radius:12px;padding:8px;width:100%}
-/* LOADING / ERROR */
 .loading{text-align:center;padding:40px;color:var(--muted)}
 .spin{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -176,39 +154,32 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 </head>
 <body>
 
-<!-- OVERLAY -->
 <div class="ovl" id="ovl" onclick="closeSM()"></div>
-
-<!-- SIDE MENU -->
 <div class="smenu" id="smenu">
   <div class="smhdr">
     <div class="hicon">&#x1F3C6;</div>
     <div class="smtitle">JCH 2026</div>
     <button class="smclose" onclick="closeSM()">&#x2715;</button>
   </div>
-  <div class="smitem on" id="sm-main" onclick="nav('main');closeSM()">
+  <div class="smitem on" id="sm-main" onclick="goPage('main');closeSM()">
     <span class="smicon">&#x1F3E0;</span><span id="t-sm-main">ASOSIY</span>
   </div>
-  <div class="smitem" id="sm-group" onclick="nav('group');closeSM()">
+  <div class="smitem" id="sm-group" onclick="goPage('group');closeSM()">
     <span class="smicon">&#x1F4CA;</span><span id="t-sm-group">GURUH BOSQICHI</span>
   </div>
-  <div class="smitem" id="sm-sched" onclick="nav('sched');closeSM()">
+  <div class="smitem" id="sm-sched" onclick="goPage('sched');closeSM()">
     <span class="smicon">&#x1F4C5;</span><span id="t-sm-sched">JADVALLAR</span>
   </div>
-  <div class="smitem" id="sm-stats" onclick="nav('stats');closeSM()">
+  <div class="smitem" id="sm-stats" onclick="goPage('stats');closeSM()">
     <span class="smicon">&#x1F3C5;</span><span id="t-sm-stats">STATISTIKA</span>
   </div>
 </div>
 
-<!-- HEADER -->
 <header class="hdr">
   <button class="hbtn" onclick="openSM()">&#x2630;</button>
   <div class="hlogo">
     <div class="hicon">&#x1F3C6;</div>
-    <div>
-      <div class="htitle">JCH 2026</div>
-      <div class="hsub">FIFA Jahon Chempionati</div>
-    </div>
+    <div><div class="htitle">JCH 2026</div><div class="hsub">FIFA Jahon Chempionati</div></div>
   </div>
   <div class="hright">
     <div class="lbtn">
@@ -218,102 +189,94 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
         <span>&#x25BE;</span>
       </div>
       <div class="ldrop" id="ldrop">
-        <div class="lopt on" onclick="setLang('uz')">&#x1F1FA;&#x1F1FF; O'zbek</div>
-        <div class="lopt" onclick="setLang('ru')">&#x1F1F7;&#x1F1FA; Русский</div>
-        <div class="lopt" onclick="setLang('en')">&#x1F1EC;&#x1F1E7; English</div>
+        <div class="lopt on" onclick="changeLang('uz')">&#x1F1FA;&#x1F1FF; O'zbek</div>
+        <div class="lopt" onclick="changeLang('ru')">&#x1F1F7;&#x1F1FA; Русский</div>
+        <div class="lopt" onclick="changeLang('en')">&#x1F1EC;&#x1F1E7; English</div>
       </div>
     </div>
     <div class="upill"><div class="dot"></div><span id="clk">...</span></div>
   </div>
 </header>
 
-<!-- MAIN 2 TABS -->
 <div class="mtabs">
-  <button class="mtab on" id="btn-home" onclick="nav('main')">
+  <button class="mtab on" id="btn-main" onclick="goPage('main')">
     &#x1F3E0; <span id="t-btn-home">ASOSIY</span>
   </button>
-  <button class="mtab po" id="btn-playoff" onclick="nav('playoff')">
+  <button class="mtab po" id="btn-playoff" onclick="goPage('playoff')">
     &#x1F3C6; <span id="t-btn-playoff">PLAYOFF</span>
   </button>
 </div>
 
-<!-- PAGE: MAIN -->
 <div id="pg-main" style="display:block"><div class="loading"><div class="spin"></div><div style="margin-top:8px;font-size:13px">Yuklanmoqda...</div></div></div>
-
-<!-- PAGE: GROUP -->
-<div id="pg-group" style="display:none">
-  <nav class="gtabs" id="gtabs"></nav>
-  <div id="gpages"></div>
-</div>
-
-<!-- PAGE: SCHED -->
-<div class="pg" id="pg-sched" style="display:none"></div>
-
-<!-- PAGE: STATS -->
-<div class="pg" id="pg-stats" style="display:none"></div>
-
-<!-- PAGE: PLAYOFF -->
+<div id="pg-group" style="display:none"><nav class="gtabs" id="gtabs"></nav><div id="gpages"></div></div>
+<div id="pg-sched" style="display:none;max-width:1060px;margin:0 auto;padding:14px"></div>
+<div id="pg-stats" style="display:none;max-width:1060px;margin:0 auto;padding:14px"></div>
 <div id="pg-playoff" style="display:none;max-width:1200px;margin:0 auto;padding:14px"></div>
 
 <script>
-// ============================================================
-// TILLAR
-// ============================================================
-var LG = {
-  uz: {
-    mmain:'ASOSIY', mgroup:'GURUH BOSQICHI', msched:'JADVALLAR', mstats:'STATISTIKA',
-    tbhome:'ASOSIY', tbplayoff:'PLAYOFF BOSQICHI',
-    played:"O'YNALGAN", goals:'GOLLAR', avg:"O'RTACHA GOL", teams:'JAMOALAR',
-    inplay:'JONLI', remaining:'QOLGAN',
-    live:'JONLI', fin:'TUGADI', soon:'KELGUSI',
-    recent:"SO'NGGI NATIJALAR", nextm:"KELGUSI O'YINLAR", allg:'BARCHA GURUHLAR',
-    st:'TURNIR JADVALI', uzbst:"O'ZBEKISTON HOLATI",
-    pin:'PLAYOFF GA CHIQMOQDA', pmay:'EHTIMOLIY', pout:'TASHQARIDA',
-    scorers:'TOP URАРLAR', stattitle:'TURNIR STATISTIKASI',
-    third:"ENG YAXSHI 3-O'RINCHILAR", thirdinfo:"12 guruhdan 8 ta eng yaxshi 3-o'rinchi playoff ga chiqadi",
+var LG={
+  uz:{
+    mmain:'ASOSIY',mgroup:'GURUH BOSQICHI',msched:'JADVALLAR',mstats:'STATISTIKA',
+    tbhome:'ASOSIY',tbplayoff:'PLAYOFF',
+    played:"O'YNALGAN",goals:'GOLLAR',avg:"O'RTACHA GOL",teams:'JAMOALAR',
+    inplay:'JONLI',remaining:'QOLGAN',
+    live:'JONLI',fin:'TUGADI',soon:'KELGUSI',
+    recent:"SO'NGGI NATIJALAR",nextm:"KELGUSI O'YINLAR",allg:'BARCHA GURUHLAR',
+    st:'TURNIR JADVALI',uzbst:"O'ZBEKISTON HOLATI",
+    pin:'PLAYOFF GA CHIQMOQDA',pmay:'EHTIMOLIY',pout:'TASHQARIDA',
+    scorers:'TOP URАРLAR',stattitle:'TURNIR STATISTIKASI',
+    third:"ENG YAXSHI 3-O'RINCHILAR",thirdinfo:"12 guruhdan 8 ta eng yaxshi 3-o'rinchi playoff ga chiqadi",
     plinfo:'28-iyn — 19-iyl 2026',
-    fall:'HAMMASI', fgrp:'GURUH', fr32:'R32', fr16:'R16', fqf:'CHORAK', fsf:'YARIM', ff:'FINAL',
-    cp:'O', cw:'G', cd:'D', cl:'M', cgf:'UG', cga:'KG', cgd:'FF', cpts:'BAL', cteam:'JAMOA',
+    fall:'HAMMASI',fgrp:'GURUH',fr32:'R32',fr16:'R16',fqf:'CHORAK',fsf:'YARIM',ff:'FINAL',
+    cp:'O',cw:'G',cd:'D',cl:'M',cgf:'UG',cga:'KG',cgd:'FF',cpts:'BAL',cteam:'JAMOA',
     tn:{
       "Mexico":"Meksika","South Africa":"Janubiy Afrika","South Korea":"Janubiy Koreya",
       "Czechia":"Chexiya","Czech Republic":"Chexiya","Canada":"Kanada",
-      "Bosnia and Herzegovina":"Bosniya","Bosnia-Herzegovina":"Bosniya","Bosnia-H.":"Bosniya","Qatar":"Qatar","Switzerland":"Shveytsariya",
-      "Brazil":"Braziliya","Morocco":"Marokash","Scotland":"Shotlandiya","Haiti":"Gaiti",
-      "USA":"AQSh","United States":"AQSh","Paraguay":"Paragvay","Australia":"Avstraliya",
-      "Türkiye":"Turkiya","Turkey":"Turkiya","Germany":"Germaniya","Curaçao":"Kyurasao",
-      "Côte d'Ivoire":"Kot-d'Ivuar","Ivory Coast":"Kot-d'Ivuar","Ecuador":"Ekvador",
-      "Netherlands":"Niderlandiya","Japan":"Yaponiya","Sweden":"Shvetsiya","Tunisia":"Tunis",
-      "Belgium":"Belgiya","Iran":"Eron","Egypt":"Misr","New Zealand":"Yangi Zelandiya",
-      "Spain":"Ispaniya","Cabo Verde":"Kabo-Verde","Cape Verde":"Kabo-Verde",
-      "Cape Verde Islands":"Kabo-Verde","Saudi Arabia":"Saudiya Arabistoni","Uruguay":"Urugvay",
-      "France":"Fransiya","Senegal":"Senegal","Iraq":"Iroq","Norway":"Norvegiya",
-      "Argentina":"Argentina","Algeria":"Jazoir","Austria":"Avstriya","Jordan":"Iordaniya",
-      "Portugal":"Portugaliya","DR Congo":"Kongo DR","Congo DR":"Kongo DR",
-      "Congo, DR":"Kongo DR","Democratic Republic of Congo":"Kongo DR",
-      "Uzbekistan":"O'zbekiston","Colombia":"Kolumbiya","England":"Angliya",
-      "Croatia":"Xorvatiya","Ghana":"Gana","Panama":"Panama"
+      "Bosnia-Herzegovina":"Bosniya","Bosnia and Herzegovina":"Bosniya","Bosnia-H.":"Bosniya",
+      "Qatar":"Qatar","Switzerland":"Shveytsariya","Brazil":"Braziliya","Morocco":"Marokash",
+      "Scotland":"Shotlandiya","Haiti":"Gaiti","USA":"AQSh","United States":"AQSh",
+      "Paraguay":"Paragvay","Australia":"Avstraliya","Türkiye":"Turkiya","Turkey":"Turkiya",
+      "Germany":"Germaniya","Curaçao":"Kyurasao","Côte d'Ivoire":"Kot-d'Ivuar",
+      "Ivory Coast":"Kot-d'Ivuar","Ecuador":"Ekvador","Netherlands":"Niderlandiya",
+      "Japan":"Yaponiya","Sweden":"Shvetsiya","Tunisia":"Tunis","Belgium":"Belgiya",
+      "Iran":"Eron","Egypt":"Misr","New Zealand":"Yangi Zelandiya","Spain":"Ispaniya",
+      "Cabo Verde":"Kabo-Verde","Cape Verde":"Kabo-Verde","Cape Verde Islands":"Kabo-Verde",
+      "Saudi Arabia":"Saudiya Arabistoni","Uruguay":"Urugvay","France":"Fransiya",
+      "Senegal":"Senegal","Iraq":"Iroq","Norway":"Norvegiya","Argentina":"Argentina",
+      "Algeria":"Jazoir","Austria":"Avstriya","Jordan":"Iordaniya","Portugal":"Portugaliya",
+      "DR Congo":"Kongo DR","Congo DR":"Kongo DR","Congo, DR":"Kongo DR",
+      "Democratic Republic of Congo":"Kongo DR","Uzbekistan":"O'zbekiston",
+      "Colombia":"Kolumbiya","England":"Angliya","Croatia":"Xorvatiya","Ghana":"Gana","Panama":"Panama"
     }
   },
-  ru: {
-    mmain:'ГЛАВНАЯ', mgroup:'ГРУППЫ', msched:'РАСПИСАНИЕ', mstats:'СТАТИСТИКА',
-    tbhome:'ГЛАВНАЯ', tbplayoff:'ПЛЕЙ-ОФФ',
-    played:'СЫГРАНО', goals:'ГОЛЫ', avg:'СР.ГОЛ', teams:'КОМАНДЫ',
-    inplay:'В ИГРЕ', remaining:'ОСТАЛОСЬ',
-    live:'В ИГРЕ', fin:'ЗАВЕРШЁН', soon:'ПРЕДСТОИТ',
-    recent:'ПОСЛЕДНИЕ', nextm:'БЛИЖАЙШИЕ', allg:'ВСЕ ГРУППЫ',
-    st:'ТАБЛИЦА', uzbst:'УЗБЕКИСТАН',
-    pin:'В ПЛЕЙ-ОФФ', pmay:'ВОЗМОЖНО', pout:'ВЫБЫЛ',
-    scorers:'БОМБАРДИРЫ', stattitle:'СТАТИСТИКА ТУРНИРА',
-    third:'ЛУЧШИЕ 3-Е МЕСТА', thirdinfo:'8 лучших команд на 3-м месте выходят в плей-офф',
+  ru:{
+    mmain:'ГЛАВНАЯ',mgroup:'ГРУППЫ',msched:'РАСПИСАНИЕ',mstats:'СТАТИСТИКА',
+    tbhome:'ГЛАВНАЯ',tbplayoff:'ПЛЕЙ-ОФФ',
+    played:'СЫГРАНО',goals:'ГОЛЫ',avg:'СР.ГОЛ',teams:'КОМАНДЫ',
+    inplay:'В ИГРЕ',remaining:'ОСТАЛОСЬ',
+    live:'В ИГРЕ',fin:'ЗАВЕРШЁН',soon:'ПРЕДСТОИТ',
+    recent:'ПОСЛЕДНИЕ',nextm:'БЛИЖАЙШИЕ',allg:'ВСЕ ГРУППЫ',
+    st:'ТАБЛИЦА',uzbst:'УЗБЕКИСТАН',
+    pin:'В ПЛЕЙ-ОФФ',pmay:'ВОЗМОЖНО',pout:'ВЫБЫЛ',
+    scorers:'БОМБАРДИРЫ',stattitle:'СТАТИСТИКА ТУРНИРА',
+    third:'ЛУЧШИЕ 3-Е МЕСТА',thirdinfo:'8 лучших команд на 3-м месте выходят в плей-офф',
     plinfo:'28 июн — 19 июл 2026',
-    fall:'ВСЕ', fgrp:'ГРУППА', fr32:'R32', fr16:'1/8', fqf:'ЧЕТВЕРТЬ', fsf:'ПОЛУ', ff:'ФИНАЛ',
-    cp:'И', cw:'В', cd:'Н', cl:'П', cgf:'ЗГ', cga:'ПГ', cgd:'РГ', cpts:'ОЧ', cteam:'КОМАНДА',
+    fall:'ВСЕ',fgrp:'ГРУППА',fr32:'R32',fr16:'1/8',fqf:'ЧЕТВЕРТЬ',fsf:'ПОЛУ',ff:'ФИНАЛ',
+    cp:'И',cw:'В',cd:'Н',cl:'П',cgf:'ЗГ',cga:'ПГ',cgd:'РГ',cpts:'ОЧ',cteam:'КОМАНДА',
     tn:{
       "Mexico":"Мексика","South Africa":"ЮАР","South Korea":"Ю.Корея","Czechia":"Чехия",
-      "Czech Republic":"Чехия","Canada":"Канада","Bosnia and Herzegovina":"Босния",
-      "Qatar":"Катар","Switzerland":"Швейцария","Brazil":"Бразилия","Morocco":"Марокко",
-      "Scotland":"Шотландия","Haiti":"Гаити","USA":"США","United States":"США",
-      "Paraguay":"Парагвай","Australia":"Австралия","Türkiye":"Турция","Turkey":"Турция",
-      "Germany":"Германия","Curaçao":"Кюрасао","Côte d'Ivoire":"Кот-д'Ивуар",
-      "Ivory Coast":"Кот-д'Ивуар","Ecuador":"Эквадор","Netherlands":"Нидерланды",
-      "Japan":"Яп
+      "Czech Republic":"Чехия","Canada":"Канада","Bosnia-Herzegovina":"Босния",
+      "Bosnia and Herzegovina":"Босния","Qatar":"Катар","Switzerland":"Швейцария",
+      "Brazil":"Бразилия","Morocco":"Марокко","Scotland":"Шотландия","Haiti":"Гаити",
+      "USA":"США","United States":"США","Paraguay":"Парагвай","Australia":"Австралия",
+      "Türkiye":"Турция","Turkey":"Турция","Germany":"Германия","Curaçao":"Кюрасао",
+      "Côte d'Ivoire":"Кот-д'Ивуар","Ivory Coast":"Кот-д'Ивуар","Ecuador":"Эквадор",
+      "Netherlands":"Нидерланды","Japan":"Япония","Sweden":"Швеция","Tunisia":"Тунис",
+      "Belgium":"Бельгия","Iran":"Иран","Egypt":"Египет","New Zealand":"Новая Зеландия",
+      "Spain":"Испания","Cabo Verde":"Кабо-Верде","Cape Verde":"Кабо-Верде",
+      "Cape Verde Islands":"Кабо-Верде","Saudi Arabia":"Саудовская Аравия","Uruguay":"Уругвай",
+      "France":"Франция","Senegal":"Сенегал","Iraq":"Ирак","Norway":"Норвегия",
+      "Argentina":"Аргентина","Algeria":"Алжир","Austria":"Австрия","Jordan":"Иордания",
+      "Portugal":"Португалия","DR Congo":"ДР Конго","Congo DR":"ДР Конго",
+      "Congo, DR":"ДР Конго","Democratic Republic of Congo":"ДР Конго","Uzbekistan":"Узбекистан",
+      "Colombi
